@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FERAZ</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#3a9e3a;
+  --gd:#1e6e1e;
+  --gl:#5abf3a;
+  --gb:#7ad63a;
+  --yel:#f0c520;
+  --yeld:#c89e10;
+  --yell:#f8e060;
+  --blk:#111;
+  --cream:#fffef5;
+  --bg:#0a2a0a;
+  --bgm:#0f380f;
+  --ld:#1a5e1a;
+  --lm:#267026;
+  --ll:#3a9e3a;
+  --trk:#7a4e18;
+}
+html{scroll-behavior:smooth;width:100%;overflow-x:hidden}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--cream);overflow-x:hidden;cursor:auto;margin:0;width:100%}
+
+/* ── MOBILE MENU ── */
+function toggleMenu(){
+  const h=document.getElementById('nav-ham'),d=document.getElementById('nav-drawer');
+  const open=d.classList.toggle('open');
+  h.classList.toggle('open',open);
+}
+function closeMenu(){
+  document.getElementById('nav-drawer').classList.remove('open');
+  document.getElementById('nav-ham').classList.remove('open');
+}
+document.addEventListener('click',e=>{
+  const d=document.getElementById('nav-drawer'),h=document.getElementById('nav-ham');
+  if(d&&d.classList.contains('open')&&!d.contains(e.target)&&!h.contains(e.target))closeMenu();
+});
+
+/* ── CURSOR ── */
+.cur{position:fixed;width:14px;height:14px;background:var(--yel);border-radius:50%;border:3px solid var(--blk);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s;display:none}
+.cur-r{position:fixed;width:38px;height:38px;border:2px solid rgba(240,197,32,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .35s cubic-bezier(.25,.46,.45,.94);display:none}
+
+/* ══════════ LANG SWITCHER ══════════ */
+.lang-wrap{
+  position:fixed;top:84px;right:20px;z-index:600;
+}
+.lang-current{
+  background:var(--blk);border:2.5px solid var(--yel);
+  border-radius:50px;padding:7px 18px;
+  font-family:'Fredoka One',sans-serif;font-size:.85rem;letter-spacing:2px;
+  color:var(--yel);cursor:auto;display:flex;align-items:center;gap:6px;
+  box-shadow:3px 3px 0 rgba(0,0,0,.4);
+  transition:background .2s;
+  user-select:none;
+}
+.lang-current.open{background:rgba(240,197,32,.15);border-radius:50px 50px 0 0}
+.lang-dropdown{
+  position:absolute;top:100%;right:0;
+  background:var(--blk);
+  border:2.5px solid var(--yel);border-top:none;
+  border-radius:0 0 14px 14px;overflow:hidden;
+  display:none;flex-direction:column;
+  min-width:120px;
+  box-shadow:5px 5px 0 rgba(0,0,0,.5);
+}
+.lang-dropdown.open{display:flex}
+@keyframes ddOpen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.lang-opt{
+  padding:11px 20px;font-family:'Fredoka One',sans-serif;font-size:.82rem;
+  letter-spacing:2px;color:rgba(255,255,255,.6);background:transparent;
+  border:none;cursor:auto;text-align:left;transition:all .15s;
+  width:100%;
+}
+.lang-opt:hover,.lang-opt.active{background:var(--yel);color:var(--blk)}
+.lang-opt+.lang-opt{border-top:1px solid rgba(255,255,255,.08)}
+
+/* ══════════ NAV ══════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;height:72px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;
+  background:rgba(10,26,10,.93);backdrop-filter:blur(16px);
+  border-bottom:3px solid var(--yel);
+}
+/* GRAFFITI LOGO — CSS recreation of the FERAZ logo style */
+.logo-svg-wrap{height:44px;display:flex;align-items:center}
+.logo-svg-wrap svg{height:100%;width:auto}
+.nav-ul{display:flex;gap:24px;list-style:none}
+.nav-ul a{color:rgba(255,254,245,.75);text-decoration:none;font-family:'Fredoka One',sans-serif;font-size:.82rem;font-weight:400;letter-spacing:1px;text-transform:uppercase;transition:color .2s}
+.nav-ul a:hover{color:var(--yel)}
+.nav-cta{
+  background:var(--yel);color:var(--blk);border:3px solid var(--blk);
+  padding:10px 22px;border-radius:50px;
+  font-family:'Fredoka One',sans-serif;font-size:.88rem;cursor:auto;letter-spacing:1px;
+  box-shadow:4px 4px 0 var(--blk);transition:all .2s;
+}
+.nav-cta:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--blk);background:var(--yell)}
+.nav-ham{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:none;border:2px solid var(--yel);border-radius:8px;padding:6px 7px;cursor:pointer;flex-shrink:0}
+.nav-ham span{display:block;height:2px;background:var(--yel);border-radius:2px;transition:all .3s}
+.nav-ham.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-ham.open span:nth-child(2){opacity:0}
+.nav-ham.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.nav-drawer{position:fixed;top:72px;left:0;right:0;z-index:490;background:rgba(5,15,5,.97);backdrop-filter:blur(16px);border-bottom:3px solid var(--yel);padding:16px 24px 24px;display:none;flex-direction:column;gap:4px}
+.nav-drawer.open{display:flex}
+.nav-drawer a{font-family:'Fredoka One',sans-serif;font-size:1rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,254,245,.8);text-decoration:none;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-drawer a:last-child{border-bottom:none}
+.nav-drawer .d-cta{margin-top:12px;background:var(--yel);color:var(--blk);border:3px solid var(--blk);padding:12px;border-radius:50px;font-family:'Fredoka One',sans-serif;font-size:.9rem;box-shadow:4px 4px 0 var(--blk);text-align:center;text-decoration:none}
+
+/* ══════════ HERO ══════════ */
+#hero{
+  position:relative;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  padding-top:72px;/* nav height */
+}
+
+/* Sky — inspired by the cartoon reference: light blue-green gradient */
+.hero-sky{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,#1a4a1a 0%,#0a2a0a 100%);
+}
+/* HERO IMAGE WRAP */
+.hero-img-wrap{
+  position:absolute;inset:0;z-index:2;overflow:hidden;
+}
+.hero-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center bottom}
+.hero-img-placeholder{
+  width:100%;height:100%;
+  background:linear-gradient(160deg,#0a3010 0%,#1a5a1a 30%,#2a8a2a 55%,#1a5a0a 80%,#0a2008 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  border:3px dashed rgba(240,197,32,0.3);
+}
+.hip-icon{font-size:3rem;opacity:.5}
+.hip-text{
+  font-family:'Fredoka One',sans-serif;font-size:.9rem;letter-spacing:2px;
+  color:rgba(255,254,245,.35);text-transform:uppercase;text-align:center;padding:0 24px;
+}
+
+/* ── FULL CARTOON JUNGLE HERO (SVG — faithful to reference image) ── */
+.hero-jungle{display:none}
+
+/* Gentle mist at base */
+
+@keyframes mistA{0%,100%{opacity:.7}50%{opacity:1;transform:scaleX(1.03)}}
+
+/* HERO CONTENT — clean, only logo + buttons */
+.hero-content{
+  position:relative;z-index:10;
+  text-align:center;padding:0 32px;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+  /* centered in sky above tree line */
+  transform:translateY(-12%);
+}
+
+/* BIG LOGO — faithful to the graffiti image */
+.hero-logo{
+  filter:drop-shadow(0 6px 28px rgba(0,0,0,.6)) drop-shadow(0 0 80px rgba(58,158,58,.35));
+  animation:logoPop .9s .2s cubic-bezier(.34,1.56,.64,1) both;
+  width:min(520px,82vw);
+}
+@keyframes logoPop{from{opacity:0;transform:scale(.5) rotate(-4deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+
+.hero-btns{
+  display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp .8s .8s ease both;
+}
+.btn-p{
+  background:var(--green);color:var(--cream);border:4px solid var(--blk);
+  padding:16px 40px;border-radius:50px;
+  font-family:'Fredoka One',sans-serif;font-size:1.05rem;letter-spacing:1px;
+  cursor:auto;box-shadow:5px 5px 0 var(--blk);transition:all .2s;
+}
+.btn-p:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--blk);background:var(--gl)}
+.btn-o{
+  background:white;color:var(--blk);border:4px solid var(--blk);
+  padding:14px 36px;border-radius:50px;
+  font-family:'Fredoka One',sans-serif;font-size:1.05rem;letter-spacing:1px;
+  cursor:auto;box-shadow:5px 5px 0 var(--blk);transition:all .2s;
+}
+.btn-o:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--blk);background:var(--yell)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* Scroll cue */
+.scroll-cue{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:5px}
+.scroll-cue span{font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:3px;color:var(--blk);background:var(--yel);padding:3px 12px;border-radius:20px;border:2px solid var(--blk);text-transform:uppercase}
+.scroll-arr{width:24px;height:24px;border-right:4px solid var(--blk);border-bottom:4px solid var(--blk);transform:rotate(45deg);animation:sbounce 1.4s ease-in-out infinite;margin-top:3px}
+@keyframes sbounce{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(7px)}}
+
+
+/* ══ FLOATING FERAZ CARDS — Hero ══ */
+.hero-float-cards{
+  position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden;
+}
+.fcard{
+  position:absolute;
+  width:clamp(80px,10vw,130px);
+  aspect-ratio:3/4;
+  border-radius:12px;
+  overflow:hidden;
+  border:3px solid #c8960a;
+  box-shadow:
+    0 0 0 1px #f0c520,
+    0 0 0 3px #8a6200,
+    4px 6px 0 rgba(0,0,0,.6),
+    0 8px 32px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,220,80,.6),
+    inset 0 -1px 0 rgba(120,80,0,.4);
+  background:#1a0e00;
+  animation: floatCard linear infinite;
+  transform-origin:center center;
+}
+.fcard img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  border-radius:9px;
+}
+/* shimmer overlay */
+.fcard::after{
+  content:'';position:absolute;inset:0;border-radius:9px;
+  background:linear-gradient(135deg,rgba(255,220,80,.22) 0%,transparent 45%,rgba(0,0,0,.12) 100%);
+  pointer-events:none;
+}
+
+/* individual card positions + rotations + animation timing */
+/* ── LEFT: fc1(topo), fc2(meio), fc3(baixo+direita) ── */
+.fc1{left:2%;top:8%;transform:rotate(-12deg);animation-name:floatCard1;animation-duration:7s;animation-delay:0s}
+.fc2{left:5%;top:44%;transform:rotate(8deg);animation-name:floatCard2;animation-duration:8.5s;animation-delay:-2s}
+.fc3{left:16%;top:72%;transform:rotate(-7deg);animation-name:floatCard3;animation-duration:7.8s;animation-delay:-4s}
+/* ── TOP CENTER: fc4(esq) fc5(dir) ── */
+.fc4{left:35%;top:3%;transform:rotate(-5deg);animation-name:floatCard4;animation-duration:9s;animation-delay:-1s}
+.fc5{right:35%;top:3%;transform:rotate(6deg);animation-name:floatCard5;animation-duration:7.2s;animation-delay:-3.5s}
+/* ── RIGHT: fc6(topo), fc7(meio), fc8(baixo) ── */
+.fc6{right:2%;top:8%;transform:rotate(14deg);animation-name:floatCard6;animation-duration:7.5s;animation-delay:-3s}
+.fc7{right:5%;top:44%;transform:rotate(-10deg);animation-name:floatCard7;animation-duration:8s;animation-delay:-1.5s}
+.fc8{right:2%;top:72%;transform:rotate(6deg);animation-name:floatCard8;animation-duration:8.2s;animation-delay:-2.5s}
+/* ── BOTTOM CENTER: fc9 abaixo dos botões ── */
+.fc9{left:50%;bottom:10%;transform:translateX(-50%) rotate(-4deg);animation-name:floatCard9;animation-duration:7.6s;animation-delay:-0.8s}
+
+@keyframes floatCard1{
+  0%,100%{transform:rotate(-12deg) translateY(0px)}
+  50%{transform:rotate(-10deg) translateY(-18px)}
+}
+@keyframes floatCard2{
+  0%,100%{transform:rotate(8deg) translateY(0px)}
+  50%{transform:rotate(10deg) translateY(-14px)}
+}
+@keyframes floatCard3{
+  0%,100%{transform:translateX(-50%) rotate(3deg) translateY(0px)}
+  50%{transform:translateX(-50%) rotate(5deg) translateY(-20px)}
+}
+@keyframes floatCard4{
+  0%,100%{transform:rotate(14deg) translateY(0px)}
+  50%{transform:rotate(12deg) translateY(-16px)}
+}
+@keyframes floatCard5{
+  0%,100%{transform:rotate(-5deg) translateY(0px)}
+  50%{transform:rotate(-3deg) translateY(-14px)}
+}
+@keyframes floatCard6{
+  0%,100%{transform:rotate(14deg) translateY(0px)}
+  50%{transform:rotate(12deg) translateY(-16px)}
+}
+@keyframes floatCard7{
+  0%,100%{transform:rotate(-10deg) translateY(0px)}
+  50%{transform:rotate(-8deg) translateY(-13px)}
+}
+@keyframes floatCard8{
+  0%,100%{transform:rotate(6deg) translateY(0px)}
+  50%{transform:rotate(8deg) translateY(-15px)}
+}
+@keyframes floatCard9{
+  0%,100%{transform:rotate(5deg) translateY(0px)}
+  50%{transform:rotate(7deg) translateY(-11px)}
+}
+
+/* ── MOBILE: fc4+fc5 no topo, fc9 acima do Explore ── */
+@media(max-width:600px){
+  .fc1,.fc2,.fc3,.fc6,.fc7,.fc8{display:none}
+  .fcard{width:clamp(120px,28vw,150px)}
+  .fc4{left:12%;top:4%;transform:rotate(-5deg)}
+  .fc5{right:12%;top:4%;transform:rotate(6deg)}
+  .fc9{left:50%;bottom:68px;transform:translateX(-50%) rotate(-4deg)}
+}
+/* ── TABLET: 7 cards (esconde fc3 e fc9) ── */
+@media(min-width:601px) and (max-width:900px){
+  .fcard{width:clamp(70px,8vw,100px)}
+  .fc3{display:none}.fc9{display:none}
+  .fc1{left:1%;top:8%}.fc2{left:3%;top:46%}
+  .fc4{left:33%;top:3%}.fc5{right:33%;top:3%}
+  .fc6{right:1%;top:8%}.fc7{right:3%;top:46%}.fc8{right:1%;top:72%}
+}
+
+/* ══════════ SECTION COMMON ══════════ */
+.sec{padding:100px 48px;position:relative}
+.sec-tag{display:inline-block;font-family:'Fredoka One',sans-serif;font-size:.78rem;letter-spacing:3px;text-transform:uppercase;background:var(--yel);color:var(--blk);padding:5px 18px;border-radius:50px;border:2px solid var(--blk);box-shadow:3px 3px 0 var(--blk);margin-bottom:14px}
+.sec-h{font-family:'Fredoka One',sans-serif;font-size:clamp(2rem,4.5vw,3.6rem);color:var(--cream);line-height:1.15;text-shadow:3px 3px 0 rgba(0,0,0,.5)}
+.sec-h .acc{color:var(--yel)}
+.sec-p{font-size:1rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.75);max-width:560px}
+
+/* ══════════ BEASTZ SECTION ══════════ */
+#beastz{
+  background:linear-gradient(180deg,var(--bg) 0%,var(--bgm) 50%,var(--bg) 100%);
+  overflow:hidden;
+}
+#beastz::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--yel) 0,var(--yel) 12px,var(--blk) 12px,var(--blk) 24px)}
+#beastz::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:repeating-linear-gradient(90deg,var(--green) 0,var(--green) 12px,var(--blk) 12px,var(--blk) 24px)}
+
+.beastz-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:28px;max-width:1060px;margin:50px auto 0;
+  perspective:1200px; /* enables 3D for children */
+}
+
+/* 3D CARD WRAPPER — tilt on hover */
+.beast-card-wrap{
+  perspective:800px;
+  cursor:auto;
+}
+.beast-card{
+  border-radius:20px;
+  border:3px solid var(--blk);
+  box-shadow:
+    6px 6px 0 var(--blk),
+    0 20px 60px rgba(0,0,0,0.45),
+    0 8px 24px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+  overflow:visible;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform .4s cubic-bezier(.23,1,.32,1),box-shadow .4s;
+  transform:perspective(800px) rotateX(2deg);
+  border-radius:20px;
+  overflow:hidden;
+}
+.beast-card:hover{
+  transform:perspective(800px) rotateX(-4deg) rotateY(0deg) translateY(-12px) scale(1.03);
+  box-shadow:
+    4px 4px 0 var(--blk),
+    0 32px 80px rgba(0,0,0,0.55),
+    0 12px 32px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+/* 3D shine overlay */
+.beast-card::before{
+  content:'';
+  position:absolute;inset:0;z-index:10;pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 50%,rgba(0,0,0,0.08) 100%);
+  border-radius:18px;
+  transition:opacity .3s;
+}
+.beast-card:hover::before{opacity:0.7}
+
+/* IMAGE SLOT */
+.beast-img{
+  width:100%;aspect-ratio:3/4;
+  background:linear-gradient(135deg,var(--lm),var(--bg));
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;border-bottom:3px solid var(--blk);
+}
+.beast-img img{width:100%;height:100%;object-fit:cover;display:block}
+.beast-ph{display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.65}
+.beast-ph .be{font-size:36px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.5))}
+.beast-ph .bl{font-family:'Fredoka One',sans-serif;font-size:.7rem;letter-spacing:2px;color:rgba(255,255,255,.45);text-transform:uppercase}
+
+/* EXPAND BUTTON indicator */
+.beast-expand-hint{
+  position:absolute;bottom:8px;right:10px;z-index:11;
+  font-family:'Fredoka One',sans-serif;font-size:.65rem;letter-spacing:1px;
+  color:var(--yel);background:rgba(0,0,0,.6);
+  padding:3px 8px;border-radius:20px;
+  opacity:0;transition:opacity .2s;pointer-events:none;
+}
+.beast-card:hover .beast-expand-hint{opacity:1}
+
+/* EXPANDED PANEL */
+.beast-panel{
+  display:none;
+  grid-column:1/-1; /* span full width */
+  background:linear-gradient(135deg,rgba(10,30,10,.98),rgba(5,15,5,.98));
+  border:3px solid var(--yel);
+  border-radius:20px;
+  padding:32px 36px;
+  box-shadow:8px 8px 0 var(--blk),0 0 60px rgba(240,197,32,.08);
+  position:relative;
+  animation:panelOpen .4s cubic-bezier(.16,1,.3,1);
+  margin-top:4px;
+}
+.beast-panel.open{display:block}
+@keyframes panelOpen{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+/* Arrow pointing up to card */
+.beast-panel::before{
+  content:'';
+  position:absolute;top:-14px;
+  width:0;height:0;
+  border-left:14px solid transparent;
+  border-right:14px solid transparent;
+  border-bottom:14px solid var(--yel);
+}
+.panel-inner{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:start}
+.panel-emoji{font-size:5rem;line-height:1;filter:drop-shadow(0 4px 20px currentColor)}
+.panel-body{}
+.panel-name{font-family:'Fredoka One',sans-serif;font-size:2rem;color:var(--cream);margin-bottom:6px}
+.panel-energy{font-family:'Fredoka One',sans-serif;font-size:.82rem;letter-spacing:3px;text-transform:uppercase;color:var(--yel);margin-bottom:14px}
+.panel-desc{font-size:.97rem;font-weight:700;line-height:1.82;color:rgba(255,254,245,.78);margin-bottom:16px}
+.panel-chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.pchip{font-size:.75rem;font-weight:800;padding:6px 16px;border-radius:50px;border:2px solid var(--blk);box-shadow:2px 2px 0 var(--blk)}
+.pc-v{background:var(--gl);color:var(--blk)}
+.pc-s{background:#ff8888;color:var(--blk)}
+.panel-grow{font-size:.88rem;font-weight:700;color:rgba(255,254,245,.5);font-style:italic;line-height:1.7}
+.panel-close{
+  position:absolute;top:14px;right:16px;
+  background:rgba(255,255,255,.08);border:2px solid rgba(255,255,255,.15);
+  border-radius:50%;width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;cursor:auto;color:rgba(255,255,255,.5);
+  transition:all .2s;
+}
+.panel-close:hover{background:rgba(240,197,32,.2);border-color:var(--yel);color:var(--yel)}
+/* Active card when expanded */
+.beast-card.active-card{
+  border-color:var(--yel) !important;
+  box-shadow:6px 6px 0 var(--blk),0 0 0 3px var(--yel),0 20px 60px rgba(240,197,32,0.2) !important;
+}
+/* Panel arrow position by column */
+.beast-panel[style*="--col: 0"]::before,.beast-panel[style*="--col:0"]::before{left:16%}
+.beast-panel[style*="--col: 1"]::before,.beast-panel[style*="--col:1"]::before{left:49.5%}
+.beast-panel[style*="--col: 2"]::before,.beast-panel[style*="--col:2"]::before{left:83%}
+
+.beast-info{padding:12px 14px}
+.beast-num{font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:var(--yel);margin-bottom:2px;text-transform:uppercase}
+.beast-name{font-family:'Fredoka One',sans-serif;font-size:1.35rem;color:var(--cream);margin-bottom:3px}
+.beast-en{font-size:.72rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--yell);margin-bottom:10px}
+.beast-tags{display:flex;gap:6px;flex-wrap:wrap}
+.btag{font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:50px;border:2px solid rgba(255,255,255,.2);color:rgba(255,254,245,.7);background:rgba(255,255,255,.05)}
+
+/* ══════════ LORE ══════════ */
+#lore{background:linear-gradient(180deg,var(--bg) 0%,#071407 100%);overflow:hidden}
+
+.lore-grid{max-width:1060px;margin:60px auto 0;display:flex;flex-direction:column;gap:90px}
+.lore-row{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.lore-row.flip{direction:rtl}
+.lore-row.flip > *{direction:ltr}
+.lore-num{font-family:'Fredoka One',sans-serif;font-size:7rem;color:rgba(240,197,32,.07);line-height:1;margin-bottom:-30px}
+.lore-title{font-family:'Fredoka One',sans-serif;font-size:2rem;color:var(--cream);margin-bottom:14px}
+.lore-body{font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.7);max-width:400px}
+.lore-body+.lore-body{margin-top:12px}
+
+/* ══════════ QUIZ ══════════ */
+#quiz{background:linear-gradient(135deg,var(--ld) 0%,var(--bg) 100%);padding:100px 48px;text-align:center;position:relative;overflow:hidden}
+#quiz::before{content:'🌿';position:absolute;top:28px;left:36px;font-size:2.8rem;opacity:.12;transform:rotate(-28deg)}
+#quiz::after{content:'🌿';position:absolute;bottom:28px;right:36px;font-size:2.8rem;opacity:.12;transform:rotate(150deg)}
+
+.quiz-box{max-width:720px;margin:52px auto 0;background:rgba(10,20,10,.88);border:4px solid var(--yel);border-radius:24px;padding:52px 48px;box-shadow:8px 8px 0 var(--blk),0 0 60px rgba(240,197,32,.08);backdrop-filter:blur(20px);position:relative;z-index:1}
+
+.quiz-orb{width:100px;height:100px;margin:0 auto 24px;border-radius:50%;background:radial-gradient(circle at 38% 36%,#fffce0,var(--yel) 50%,var(--yeld));border:5px solid var(--blk);box-shadow:5px 5px 0 var(--blk),0 0 36px rgba(240,197,32,.4);display:flex;align-items:center;justify-content:center;font-size:3rem;animation:orbB 3s ease-in-out infinite}
+@keyframes orbB{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-9px) rotate(3deg)}}
+
+.quiz-h{font-family:'Fredoka One',sans-serif;font-size:2.1rem;color:var(--yel);margin-bottom:10px;text-shadow:2px 2px 0 var(--blk)}
+.quiz-s{font-size:.97rem;font-weight:700;opacity:.72;line-height:1.8;max-width:460px;margin:0 auto 34px}
+
+#qflow{display:none}#qdone{display:none}
+
+.ql-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.ql-n{font-family:'Fredoka One',sans-serif;font-size:.82rem;color:var(--yel);letter-spacing:2px}
+.ql-t{flex:1;height:8px;background:rgba(255,255,255,.1);border-radius:50px;margin:0 14px;border:1.5px solid rgba(255,255,255,.12)}
+.ql-f{height:100%;background:var(--yel);border-radius:50px;transition:width .5s ease}
+.qt-t{font-family:'Fredoka One',sans-serif;font-size:1.5rem;color:var(--cream);margin-bottom:26px;line-height:1.3;text-shadow:2px 2px 0 rgba(0,0,0,.4)}
+.qopts{display:flex;flex-direction:column;gap:11px}
+.qopt{background:rgba(255,255,255,.05);border:2.5px solid rgba(255,255,255,.13);border-radius:13px;padding:14px 20px;text-align:left;font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:700;color:var(--cream);cursor:auto;transition:all .2s}
+.qopt:hover{background:rgba(240,197,32,.13);border-color:var(--yel);transform:translateX(4px)}
+.qopt.chosen{background:rgba(58,158,58,.22);border-color:var(--gl)}
+
+.re{font-size:5.5rem;margin-bottom:8px;animation:reP .65s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes reP{from{transform:scale(0) rotate(-18deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.rn{font-family:'Fredoka One',sans-serif;font-size:2.6rem;color:var(--yel);margin-bottom:12px;text-shadow:3px 3px 0 var(--blk)}
+.rd{font-size:.97rem;font-weight:700;opacity:.78;line-height:1.8;margin-bottom:22px}
+.rc{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:16px}
+.rchip{padding:7px 16px;border-radius:50px;font-size:.75rem;font-weight:800;letter-spacing:1px;border:2px solid var(--blk);box-shadow:2px 2px 0 var(--blk)}
+.rc-e{background:var(--gl);color:var(--blk)}.rc-v{background:#4dd8cc;color:var(--blk)}.rc-s{background:#ff8888;color:var(--blk)}
+.rg{font-size:.88rem;font-weight:700;opacity:.55;font-style:italic;line-height:1.7;margin-bottom:28px}
+
+/* ══════════ COMUNIDADE ══════════ */
+#comunidade{background:var(--bg);padding:100px 48px;text-align:center}
+.com-tl{font-family:'Fredoka One',sans-serif;font-size:clamp(2rem,4vw,3.4rem);max-width:580px;margin:0 auto 64px;line-height:1.2;color:var(--cream);text-shadow:3px 3px 0 rgba(0,0,0,.5)}
+.com-tl .acc{color:var(--yel)}
+.com-cards{max-width:920px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.com-card{border-radius:18px;background:linear-gradient(160deg,var(--ld),var(--bg));border:3px solid var(--blk);box-shadow:5px 5px 0 var(--blk);padding:34px 28px;text-align:left;transition:transform .3s cubic-bezier(.34,1.3,.64,1),box-shadow .3s}
+.com-card:hover{transform:translate(-3px,-5px);box-shadow:8px 10px 0 var(--blk)}
+.com-icon{font-size:2.1rem;margin-bottom:13px}
+.com-title{font-family:'Fredoka One',sans-serif;font-size:1.4rem;color:var(--cream);margin-bottom:8px}
+.com-title .soon{display:inline-block;font-family:'Fredoka One',sans-serif;font-size:.62rem;background:var(--yel);color:var(--blk);padding:2px 9px;border-radius:50px;border:2px solid var(--blk);vertical-align:middle;margin-left:7px;box-shadow:2px 2px 0 var(--blk);letter-spacing:1px}
+.com-text{font-size:.88rem;font-weight:700;opacity:.62;line-height:1.8}
+
+/* ══════════ JORNADA (GAMIFIED, no XP bar) ══════════ */
+#jornada{padding:100px 48px;background:linear-gradient(180deg,var(--bg),#081808);text-align:center}
+
+.journey-path{max-width:860px;margin:60px auto 0;position:relative;display:flex;flex-direction:column;gap:0}
+.journey-path::before{content:'';position:absolute;left:50%;top:55px;bottom:55px;width:4px;background:repeating-linear-gradient(to bottom,var(--yel) 0,var(--yel) 12px,transparent 12px,transparent 24px);transform:translateX(-50%);z-index:0}
+
+.jstep{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;gap:18px;position:relative;z-index:1;margin-bottom:18px}
+.jstep:nth-child(even) .jcard{grid-column:3}
+.jstep:nth-child(even) .jemp{grid-column:1;grid-row:1}
+.jstep:nth-child(even) .jnode{grid-column:2}
+.jemp{min-height:10px}
+
+.jnode{width:62px;height:62px;flex-shrink:0;background:var(--yel);border:4px solid var(--blk);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:4px 4px 0 var(--blk);font-family:'Fredoka One',sans-serif;font-size:1.3rem;color:var(--blk);z-index:2}
+.jnode.locked{background:rgba(255,255,255,.12);color:rgba(255,255,255,.25)}
+.jnode.active{background:var(--gl);animation:nPulse 2s ease-in-out infinite}
+@keyframes nPulse{0%,100%{box-shadow:4px 4px 0 var(--blk)}50%{box-shadow:4px 4px 0 var(--blk),0 0 18px rgba(90,191,58,.55)}}
+
+.jcard{background:linear-gradient(160deg,var(--ld),var(--bg));border:3px solid var(--blk);border-radius:15px;padding:20px 22px;box-shadow:4px 4px 0 var(--blk);transition:transform .3s,box-shadow .3s}
+.jcard:hover{transform:translate(-2px,-3px);box-shadow:6px 7px 0 var(--blk)}
+.jcap{font-family:'Fredoka One',sans-serif;font-size:.68rem;letter-spacing:3px;color:var(--yel);text-transform:uppercase;margin-bottom:5px}
+.jtitle{font-family:'Fredoka One',sans-serif;font-size:1.25rem;color:var(--cream);margin-bottom:7px}
+.jdesc{font-size:.83rem;font-weight:700;opacity:.58;line-height:1.7}
+.jstatus{display:inline-block;font-family:'Fredoka One',sans-serif;font-size:.65rem;letter-spacing:2px;padding:3px 11px;border-radius:50px;border:2px solid var(--blk);margin-top:9px}
+.st-a{background:var(--green);color:white;box-shadow:2px 2px 0 var(--blk)}
+.st-n{background:var(--yel);color:var(--blk);box-shadow:2px 2px 0 var(--blk)}
+.st-l{background:rgba(255,255,255,.08);color:rgba(255,255,255,.28);border-color:rgba(255,255,255,.12)}
+
+/* ══════════ DIGITAL TEASER ══════════ */
+#digital{padding:80px 48px;text-align:center;background:var(--bg)}
+.dig-box{max-width:560px;margin:0 auto;background:linear-gradient(135deg,rgba(240,197,32,.07),rgba(58,158,58,.05));border:4px solid var(--yel);border-radius:22px;padding:52px;box-shadow:8px 8px 0 var(--blk)}
+.dig-badge{display:inline-block;font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:3px;background:var(--yel);color:var(--blk);padding:5px 18px;border-radius:50px;border:2px solid var(--blk);box-shadow:3px 3px 0 var(--blk);margin-bottom:18px;text-transform:uppercase}
+.dig-title{font-family:'Fredoka One',sans-serif;font-size:2.1rem;color:var(--cream);margin-bottom:12px;text-shadow:2px 2px 0 rgba(0,0,0,.4)}
+.dig-body{font-size:.93rem;font-weight:700;opacity:.62;line-height:1.8;margin-bottom:26px}
+
+/* ══════════ FOOTER ══════════ */
+footer{
+  background:var(--blk);
+  border-top:4px solid var(--yel);
+  position:relative;overflow:hidden;
+}
+
+
+
+.foot-content{padding:36px 48px 28px;text-align:center;position:relative;z-index:1}
+/* FOOTER LOGO — faithful to graffiti style */
+.foot-logo{display:flex;justify-content:center;margin-bottom:18px}
+.foot-logo svg{height:48px;width:auto;filter:drop-shadow(0 3px 10px rgba(0,0,0,.6))}
+.foot-links{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;list-style:none;margin-bottom:20px}
+.foot-links a{font-family:'Fredoka One',sans-serif;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;color:rgba(255,254,245,.3);text-decoration:none;transition:color .2s}
+.foot-links a:hover{color:var(--yel)}
+.foot-copy{font-size:.74rem;font-weight:700;opacity:.25}
+
+/* ══════════ REVEAL ══════════ */
+.rv{opacity:0;transform:translateY(46px);transition:opacity .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:translateY(0)}
+.rv1{transition-delay:.1s}.rv2{transition-delay:.2s}.rv3{transition-delay:.3s}.rv4{transition-delay:.4s}
+/* 🐾 PATA DECORATIONS */
+.pata{
+  position:absolute;pointer-events:none;z-index:0;
+  font-size:1.8rem;opacity:0.06;
+  user-select:none;
+  animation:pataPulse 4s ease-in-out infinite;
+}
+@keyframes pataPulse{0%,100%{opacity:.05;transform:scale(1) rotate(var(--pr,0deg))}50%{opacity:.1;transform:scale(1.08) rotate(var(--pr,0deg))}}
+
+
+/* ══════════ RESPONSIVE ══════════ */
+@media(max-width:900px){
+  nav{padding:0 16px}.nav-ul{display:none}.nav-cta{display:none !important}.nav-ham{display:flex}
+  .sec,.sec{padding:64px 20px}
+  #lore,#quiz,#comunidade,#jornada,#digital,#beastz{padding:72px 20px}
+  .beastz-grid{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12px !important}
+  .beast-card-wrap{width:100%}
+  .beast-panel{grid-column:1/-1;margin-top:4px;padding:20px 16px}
+  .panel-inner{grid-template-columns:1fr;gap:0}
+  .panel-left{display:flex;flex-direction:row;align-items:flex-start;gap:14px;margin-bottom:14px}
+  .panel-left > div:first-child{flex-shrink:0}
+  .panel-right{width:100%}
+  .pr-desc{font-size:.88rem !important;line-height:1.7 !important}
+  .panel-chips{display:flex;flex-direction:row !important;gap:8px;flex-wrap:nowrap;margin-bottom:14px}
+  .pchip{font-size:.7rem;padding:5px 10px;flex:1;text-align:center;white-space:nowrap}
+  .lore-grid > div[style*="grid"]{grid-template-columns:1fr !important;gap:4px !important}
+  .lore-grid > div[style*="grid"] > div[style*="font-size:6rem"]{display:none !important}
+  .com-cards{grid-template-columns:1fr}
+  .quiz-box{padding:30px 18px}
+  .journey-path::before{display:none}
+  .jstep{grid-template-columns:1fr;gap:0}
+  .jnode{margin:6px auto}.jemp{display:none}
+  
+  .hero-content{margin-bottom:50px}
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-r" id="cur-r"></div>
+
+<!-- ══════════ LANG SWITCHER ══════════ -->
+<div class="lang-wrap" id="lang-wrap">
+  <div class="lang-current" id="lang-cur" onclick="toggleLang()" role="button">
+    <span id="lang-flag">🇧🇷</span>
+    <span id="lang-label">PT</span>
+    <span id="lang-arrow" style="font-size:.6rem;opacity:.5;transition:transform .2s">▼</span>
+  </div>
+  <div class="lang-dropdown" id="lang-dd">
+    <button class="lang-opt active" onclick="setLang('pt');closeLang()">🇧🇷 PT</button>
+    <button class="lang-opt" onclick="setLang('en');closeLang()">🇺🇸 EN</button>
+    <button class="lang-opt" onclick="setLang('es');closeLang()">🇪🇸 ES</button>
+  </div>
+</div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav>
+  <div class="logo-svg-wrap" id="nav-logo-wrap">
+    <!-- FERAZ graffiti logo SVG — faithful to the reference image -->
+    <svg viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="shadow" x="-5%" y="-5%" width="120%" height="130%">
+          <feDropShadow dx="2" dy="3" stdDeviation="1.5" flood-color="rgba(0,0,0,0.6)"/>
+        </filter>
+      </defs>
+      <!-- Yellow outer glow/outline shape -->
+      <rect x="2" y="4" width="216" height="52" rx="14" fill="#f0c520" filter="url(#shadow)"/>
+      <rect x="2" y="4" width="216" height="52" rx="14" fill="none" stroke="#111" stroke-width="4"/>
+      <path d="M14 8 Q60 6 100 8" stroke="rgba(255,255,255,0.4)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <text x="110" y="46" text-anchor="middle" font-family="'Fredoka One', sans-serif"
+        font-size="42" fill="#111" stroke="#111" stroke-width="12" paint-order="stroke fill" letter-spacing="3">FERAZ</text>
+      <text x="110" y="46" text-anchor="middle" font-family="'Fredoka One', sans-serif"
+        font-size="42" fill="#3a9e3a" stroke="#111" stroke-width="5" paint-order="stroke fill" letter-spacing="3">FERAZ</text>
+      <text x="110" y="46" text-anchor="middle" font-family="'Fredoka One', sans-serif"
+        font-size="42" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2" letter-spacing="3">FERAZ</text>
+    </svg>
+  </div>
+  <ul class="nav-ul">
+    <li><a href="#beastz" data-t="nav_beastz">Feraz</a></li>
+    <li><a href="#lore" data-t="nav_lore">Lore</a></li>
+    <li><a href="#quiz" data-t="nav_essence">Virtudes</a></li>
+    <li><a href="#comunidade" data-t="nav_community">Comunidade</a></li>
+    <li><a href="#jornada" data-t="nav_journey">Jornada</a></li>
+  </ul>
+  <a class="nav-cta" href="https://portal.feraz.io" target="_blank" rel="noopener" data-t="cta" style="text-decoration:none;display:inline-block">🌿 Entrar na Selva</a>
+  <button class="nav-ham" id="nav-ham" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-drawer" id="nav-drawer">
+  <a href="#beastz" onclick="closeMenu()" data-t="nav_beastz">Feraz</a>
+  <a href="#lore" onclick="closeMenu()" data-t="nav_lore">Lore</a>
+  <a href="#quiz" onclick="closeMenu()" data-t="nav_essence">Virtudes</a>
+  <a href="#comunidade" onclick="closeMenu()" data-t="nav_community">Comunidade</a>
+  <a href="#jornada" onclick="closeMenu()" data-t="nav_journey">Jornada</a>
+  <a class="d-cta" href="https://portal.feraz.io" target="_blank" rel="noopener" data-t="cta">🌿 Entrar na Selva</a>
+</div>
+
+<!-- ══════════ HERO ══════════ -->
+<section id="hero">
+  <div class="hero-sky"></div>
+
+  <!-- CARTOON JUNGLE HERO — inspired by the reference images -->
+  <!-- HERO IMAGE — add via Elementor or paste URL below -->
+  <div class="hero-img-wrap">
+    <div class="hero-img-placeholder">
+      <!-- Replace this entire div with your <img> tag in Elementor -->
+      <span class="hip-icon">🌿</span>
+
+    </div>
+  </div>
+  <!-- FLOATING FERAZ CARDS — 9 ferinhas -->
+  <div class="hero-float-cards">
+    <div class="fcard fc1"><img src="/images/4410.png" alt="Ferinha" loading="lazy"></div>
+    <div class="fcard fc2"><img src="/images/4322.png" alt="Ferinha" loading="lazy"></div>
+    <div class="fcard fc3"><img src="/images/178.png" alt="Ferinha" loading="lazy"></div>
+    <div class="fcard fc4"><img src="/images/45.png" alt="Ferinha" loading="lazy"></div>
+    <div class="fcard fc5"><img src="/images/20.png" alt="Ferinha" loading="lazy"></div>
+    <div class="fcard fc6"><img src="/images/26.png" alt="Ferinha" loading="lazy"></div>
+    <div class="fcard fc7"><img src="/images/1157.png" alt="Ferinha" loading="lazy"></div>
+    <div class="fcard fc8"><img src="/images/1198.png" alt="Ferinha" loading="lazy"></div>
+    <div class="fcard fc9"><img src="/images/2167.png" alt="Ferinha" loading="lazy"></div>
+  </div>
+
+  <!-- HERO CONTENT — clean: logo + buttons only -->
+  <div class="hero-content">
+
+
+    <div class="hero-btns">
+      <button class="btn-p" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})" data-t="btn_enter">🌿 Entrar na Selva</button>
+      <a class="btn-o" href="https://opensea.io/collection/feraz" target="_blank" rel="noopener" data-t="btn_beastz" style="text-decoration:none;display:inline-block">Comprar Feraz</a>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="scroll-arr"></div>
+    <span data-t="scroll">Explore</span>
+  </div>
+</section>
+
+<!-- ══════════ BEASTZ ══════════ -->
+<span class="pata" style="top:12%;left:4%;--pr:-25deg;font-size:2.2rem;animation-delay:0s">🐾</span>
+<span class="pata" style="top:55%;right:5%;--pr:20deg;font-size:1.6rem;animation-delay:1.5s">🐾</span>
+<span class="pata" style="bottom:10%;left:8%;--pr:40deg;font-size:1.4rem;animation-delay:3s">🐾</span>
+<section id="beastz" class="sec">
+  <div style="text-align:center">
+    <div class="sec-tag rv" data-t="bz_tag">✦ Os Guardiões</div>
+    <h2 class="sec-h rv" style="text-align:center" data-t="bz_h">Conheça <span class="acc">A Feraz</span></h2>
+    <p class="sec-p rv rv2" style="text-align:center;margin:14px auto 0" data-t="bz_sub">Cada uma das Feraz possui uma energia única, uma virtude.</p>
+  </div>
+  <div class="beastz-grid" id="beastz-grid">
+<div class="beast-card-wrap">
+  <div class="beast-card rv" id="bcard-0" style="background:linear-gradient(145deg,#0a1e3a,#0a1610)" onclick="togglePanel(0)" data-idx="0">
+    <div class="beast-img">
+      <img src="/images/macaw.jpg" alt="Arara" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px">
+    </div>
+    <span class="beast-expand-hint">▼ ver mais</span>
+  </div>
+</div>
+<div class="beast-card-wrap">
+  <div class="beast-card rv" id="bcard-1" style="background:linear-gradient(145deg,#3a1a00,#1a0a00)" onclick="togglePanel(1)" data-idx="1">
+    <div class="beast-img">
+      <img src="/images/Dog2.png" alt="Cachorro Caramelo" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px">
+    </div>
+    <span class="beast-expand-hint">▼ ver mais</span>
+  </div>
+</div>
+<div class="beast-card-wrap">
+  <div class="beast-card rv" id="bcard-2" style="background:linear-gradient(145deg,#0e1a2e,#0a100e)" onclick="togglePanel(2)" data-idx="2">
+    <div class="beast-img">
+      <img src="/images/Tiger3.png" alt="Onça" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px">
+    </div>
+    <span class="beast-expand-hint">▼ ver mais</span>
+  </div>
+</div>
+<div class="beast-card-wrap">
+  <div class="beast-card rv" id="bcard-3" style="background:linear-gradient(145deg,#180a30,#0a0810)" onclick="togglePanel(3)" data-idx="3">
+    <div class="beast-img">
+      <img src="/images/Monkey4.png" alt="Mico-Leão-Dourado" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px">
+    </div>
+    <span class="beast-expand-hint">▼ ver mais</span>
+  </div>
+</div>
+<div class="beast-card-wrap">
+  <div class="beast-card rv" id="bcard-4" style="background:linear-gradient(145deg,#0a2a14,#061208)" onclick="togglePanel(4)" data-idx="4">
+    <div class="beast-img">
+      <img src="/images/Owl5.png" alt="Coruja" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px">
+    </div>
+    <span class="beast-expand-hint">▼ ver mais</span>
+  </div>
+</div>
+<div class="beast-card-wrap">
+  <div class="beast-card rv" id="bcard-5" style="background:linear-gradient(145deg,#2a1600,#180c00)" onclick="togglePanel(5)" data-idx="5">
+    <div class="beast-img">
+      <img src="/images/Bird.png" alt="Passarinho" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px">
+    </div>
+    <span class="beast-expand-hint">▼ ver mais</span>
+  </div>
+</div>
+<div class="beast-card-wrap">
+  <div class="beast-card rv" id="bcard-6" style="background:linear-gradient(145deg,#2a1800,#1a0c00)" onclick="togglePanel(6)" data-idx="6">
+    <div class="beast-img">
+      <img src="/images/Tucan.png" alt="Tucano" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px">
+    </div>
+    <span class="beast-expand-hint">▼ ver mais</span>
+  </div>
+</div>
+<div class="beast-card-wrap">
+  <div class="beast-card rv" id="bcard-7" style="background:linear-gradient(145deg,#0a2a14,#061008)" onclick="togglePanel(7)" data-idx="7">
+    <div class="beast-img">
+      <img src="/images/Alli8.png" alt="Jacaré" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px">
+    </div>
+    <span class="beast-expand-hint">▼ ver mais</span>
+  </div>
+</div>
+<div class="beast-card-wrap">
+  <div class="beast-card rv" id="bcard-8" style="background:linear-gradient(145deg,#0a2216,#061008)" onclick="togglePanel(8)" data-idx="8">
+    <div class="beast-img">
+      <img src="/images/Sloth9.png" alt="Preguiça" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:12px">
+    </div>
+    <span class="beast-expand-hint">▼ ver mais</span>
+  </div>
+</div>
+
+<div class="beast-panel" id="bpanel-0" style="display:none;--col:0">
+  <button class="panel-close" onclick="closePanel(0)">✕</button>
+  <div class="panel-inner">
+    <div class="panel-left">
+      <div style="width:110px;height:110px;border-radius:14px;overflow:hidden;border:3px solid #4db8d4;box-shadow:4px 4px 0 #111,0 0 20px rgba(0,0,0,.3)">
+        <img src="/images/macaw.jpg" alt="Arara" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="pl-name" style="font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:#fffef5;margin-top:8px">Arara</div>
+      <div class="pl-energy" style="font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#4db8d4;margin-top:4px">VIRTUDE: HONESTIDADE</div>
+    </div>
+    <div class="panel-right">
+      <p class="pr-desc" style="font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.8);margin-bottom:16px">A Arara, símbolo de perfeição e beleza, sempre busca fazer a coisa certa. É a líder moral do grupo, mas precisa aprender a relaxar e curtir a vida.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="pr-v pchip" style="background:rgba(58,158,58,.2);border-color:rgba(58,158,58,.4);color:#8ecf3a">✨ Disciplina</span>
+        <span class="pr-s pchip" style="background:rgba(220,60,60,.15);border-color:rgba(220,60,60,.3);color:#ff9090">🌑 Perfeccionismo</span>
+      </div>
+      <div style="background:rgba(240,197,32,.07);border:1px solid rgba(240,197,32,.15);border-radius:12px;padding:14px 16px">
+        <div class="pr-grow-label" style="font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:#f0c520;margin-bottom:6px">CRESCIMENTO</div>
+        <p class="pr-grow" style="font-size:.9rem;font-weight:700;line-height:1.75;color:rgba(255,254,245,.75);margin:0">Permita-se errar. A descida também faz parte do voo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="beast-panel" id="bpanel-1" style="display:none;--col:1">
+  <button class="panel-close" onclick="closePanel(1)">✕</button>
+  <div class="panel-inner">
+    <div class="panel-left">
+      <div style="width:110px;height:110px;border-radius:14px;overflow:hidden;border:3px solid #ffb830;box-shadow:4px 4px 0 #111,0 0 20px rgba(0,0,0,.3)">
+        <img src="/images/Dog2.png" alt="Cachorro Caramelo" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="pl-name" style="font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:#fffef5;margin-top:8px">Cachorro Caramelo</div>
+      <div class="pl-energy" style="font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#ffb830;margin-top:4px">VIRTUDE: GENEROSIDADE</div>
+    </div>
+    <div class="panel-right">
+      <p class="pr-desc" style="font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.8);margin-bottom:16px">O Cachorro Caramelo é puro coração. Sempre atento, está pronto para ajudar e espalhar alegria por onde passa. É o abraço seguro do grupo, mas precisa lembrar que também merece cuidado.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="pr-v pchip" style="background:rgba(58,158,58,.2);border-color:rgba(58,158,58,.4);color:#8ecf3a">✨ Afeto</span>
+        <span class="pr-s pchip" style="background:rgba(220,60,60,.15);border-color:rgba(220,60,60,.3);color:#ff9090">🌑 Autoesquecimento</span>
+      </div>
+      <div style="background:rgba(240,197,32,.07);border:1px solid rgba(240,197,32,.15);border-radius:12px;padding:14px 16px">
+        <div class="pr-grow-label" style="font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:#f0c520;margin-bottom:6px">CRESCIMENTO</div>
+        <p class="pr-grow" style="font-size:.9rem;font-weight:700;line-height:1.75;color:rgba(255,254,245,.75);margin:0">Amar também é saber receber. Cuide de si com o mesmo carinho que oferece ao mundo.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="beast-panel" id="bpanel-2" style="display:none;--col:2">
+  <button class="panel-close" onclick="closePanel(2)">✕</button>
+  <div class="panel-inner">
+    <div class="panel-left">
+      <div style="width:110px;height:110px;border-radius:14px;overflow:hidden;border:3px solid #8ecf3a;box-shadow:4px 4px 0 #111,0 0 20px rgba(0,0,0,.3)">
+        <img src="/images/Tiger3.png" alt="Onça" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="pl-name" style="font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:#fffef5;margin-top:8px">Onça</div>
+      <div class="pl-energy" style="font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#8ecf3a;margin-top:4px">VIRTUDE: DETERMINAÇÃO</div>
+    </div>
+    <div class="panel-right">
+      <p class="pr-desc" style="font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.8);margin-bottom:16px">A Onça-pintada é foco e conquista. Ágil e confiante, busca ser a melhor em tudo o que faz. Sua força a leva longe, mas ela aprende que o verdadeiro sucesso floresce quando há amor junto com vitória.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="pr-v pchip" style="background:rgba(58,158,58,.2);border-color:rgba(58,158,58,.4);color:#8ecf3a">✨ Confiança</span>
+        <span class="pr-s pchip" style="background:rgba(220,60,60,.15);border-color:rgba(220,60,60,.3);color:#ff9090">🌑 Competitividade</span>
+      </div>
+      <div style="background:rgba(240,197,32,.07);border:1px solid rgba(240,197,32,.15);border-radius:12px;padding:14px 16px">
+        <div class="pr-grow-label" style="font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:#f0c520;margin-bottom:6px">CRESCIMENTO</div>
+        <p class="pr-grow" style="font-size:.9rem;font-weight:700;line-height:1.75;color:rgba(255,254,245,.75);margin:0">Você vale mais do que seus resultados. O brilho que vem de dentro é o que mais permanece.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="beast-panel" id="bpanel-3" style="display:none;--col:0">
+  <button class="panel-close" onclick="closePanel(3)">✕</button>
+  <div class="panel-inner">
+    <div class="panel-left">
+      <div style="width:110px;height:110px;border-radius:14px;overflow:hidden;border:3px solid #a97cde;box-shadow:4px 4px 0 #111,0 0 20px rgba(0,0,0,.3)">
+        <img src="/images/Monkey4.png" alt="Mico-Leão-Dourado" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="pl-name" style="font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:#fffef5;margin-top:8px">Mico-Leão-Dourado</div>
+      <div class="pl-energy" style="font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#a97cde;margin-top:4px">VIRTUDE: CRIATIVIDADE</div>
+    </div>
+    <div class="panel-right">
+      <p class="pr-desc" style="font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.8);margin-bottom:16px">O Mico-leão-dourado enxerga cores onde ninguém mais vê. Sensível e sonhador, transforma sentimentos em arte. Sua missão é perceber que seu jeito único é um presente para o grupo.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="pr-v pchip" style="background:rgba(58,158,58,.2);border-color:rgba(58,158,58,.4);color:#8ecf3a">✨ Originalidade</span>
+        <span class="pr-s pchip" style="background:rgba(220,60,60,.15);border-color:rgba(220,60,60,.3);color:#ff9090">🌑 Melancolia</span>
+      </div>
+      <div style="background:rgba(240,197,32,.07);border:1px solid rgba(240,197,32,.15);border-radius:12px;padding:14px 16px">
+        <div class="pr-grow-label" style="font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:#f0c520;margin-bottom:6px">CRESCIMENTO</div>
+        <p class="pr-grow" style="font-size:.9rem;font-weight:700;line-height:1.75;color:rgba(255,254,245,.75);margin:0">Sua diferença é sua força. Compartilhe sua luz — o mundo precisa dela.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="beast-panel" id="bpanel-4" style="display:none;--col:1">
+  <button class="panel-close" onclick="closePanel(4)">✕</button>
+  <div class="panel-inner">
+    <div class="panel-left">
+      <div style="width:110px;height:110px;border-radius:14px;overflow:hidden;border:3px solid #2ec4b6;box-shadow:4px 4px 0 #111,0 0 20px rgba(0,0,0,.3)">
+        <img src="/images/Owl5.png" alt="Coruja" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="pl-name" style="font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:#fffef5;margin-top:8px">Coruja</div>
+      <div class="pl-energy" style="font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#2ec4b6;margin-top:4px">VIRTUDE: SABEDORIA</div>
+    </div>
+    <div class="panel-right">
+      <p class="pr-desc" style="font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.8);margin-bottom:16px">A Coruja observa em silêncio e pensa antes de agir. Curiosa e inteligente, encontra respostas onde outros veem mistério. Mas aprende que dividir sentimentos também é uma forma de conhecimento.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="pr-v pchip" style="background:rgba(58,158,58,.2);border-color:rgba(58,158,58,.4);color:#8ecf3a">✨ Clareza</span>
+        <span class="pr-s pchip" style="background:rgba(220,60,60,.15);border-color:rgba(220,60,60,.3);color:#ff9090">🌑 Isolamento</span>
+      </div>
+      <div style="background:rgba(240,197,32,.07);border:1px solid rgba(240,197,32,.15);border-radius:12px;padding:14px 16px">
+        <div class="pr-grow-label" style="font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:#f0c520;margin-bottom:6px">CRESCIMENTO</div>
+        <p class="pr-grow" style="font-size:.9rem;font-weight:700;line-height:1.75;color:rgba(255,254,245,.75);margin:0">Conhecer é importante. Conectar é essencial.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="beast-panel" id="bpanel-5" style="display:none;--col:2">
+  <button class="panel-close" onclick="closePanel(5)">✕</button>
+  <div class="panel-inner">
+    <div class="panel-left">
+      <div style="width:110px;height:110px;border-radius:14px;overflow:hidden;border:3px solid #ff8c38;box-shadow:4px 4px 0 #111,0 0 20px rgba(0,0,0,.3)">
+        <img src="/images/Bird.png" alt="Passarinho" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="pl-name" style="font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:#fffef5;margin-top:8px">Passarinho</div>
+      <div class="pl-energy" style="font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#ff8c38;margin-top:4px">VIRTUDE: CORAGEM</div>
+    </div>
+    <div class="panel-right">
+      <p class="pr-desc" style="font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.8);margin-bottom:16px">O Passarinho é leal e atento. Está sempre cuidando dos amigos e antecipando perigos. Seu coração protetor aprende que confiar em si mesma também é um ato de bravura.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="pr-v pchip" style="background:rgba(58,158,58,.2);border-color:rgba(58,158,58,.4);color:#8ecf3a">✨ Lealdade</span>
+        <span class="pr-s pchip" style="background:rgba(220,60,60,.15);border-color:rgba(220,60,60,.3);color:#ff9090">🌑 Ansiedade</span>
+      </div>
+      <div style="background:rgba(240,197,32,.07);border:1px solid rgba(240,197,32,.15);border-radius:12px;padding:14px 16px">
+        <div class="pr-grow-label" style="font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:#f0c520;margin-bottom:6px">CRESCIMENTO</div>
+        <p class="pr-grow" style="font-size:.9rem;font-weight:700;line-height:1.75;color:rgba(255,254,245,.75);margin:0">Confie nas suas asas. Você já sabe voar.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="beast-panel" id="bpanel-6" style="display:none;--col:0">
+  <button class="panel-close" onclick="closePanel(6)">✕</button>
+  <div class="panel-inner">
+    <div class="panel-left">
+      <div style="width:110px;height:110px;border-radius:14px;overflow:hidden;border:3px solid #ffd166;box-shadow:4px 4px 0 #111,0 0 20px rgba(0,0,0,.3)">
+        <img src="/images/Tucan.png" alt="Tucano" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="pl-name" style="font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:#fffef5;margin-top:8px">Tucano</div>
+      <div class="pl-energy" style="font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#ffd166;margin-top:4px">VIRTUDE: OTIMISMO</div>
+    </div>
+    <div class="panel-right">
+      <p class="pr-desc" style="font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.8);margin-bottom:16px">O Tucano vive com entusiasmo e alegria. Ama aventuras e espalha energia por onde passa. Seu desafio é descobrir que a felicidade também mora nos momentos simples.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="pr-v pchip" style="background:rgba(58,158,58,.2);border-color:rgba(58,158,58,.4);color:#8ecf3a">✨ Entusiasmo</span>
+        <span class="pr-s pchip" style="background:rgba(220,60,60,.15);border-color:rgba(220,60,60,.3);color:#ff9090">🌑 Dispersão</span>
+      </div>
+      <div style="background:rgba(240,197,32,.07);border:1px solid rgba(240,197,32,.15);border-radius:12px;padding:14px 16px">
+        <div class="pr-grow-label" style="font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:#f0c520;margin-bottom:6px">CRESCIMENTO</div>
+        <p class="pr-grow" style="font-size:.9rem;font-weight:700;line-height:1.75;color:rgba(255,254,245,.75);margin:0">O presente é o maior dos tesouros. Fique aqui e aproveite.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="beast-panel" id="bpanel-7" style="display:none;--col:1">
+  <button class="panel-close" onclick="closePanel(7)">✕</button>
+  <div class="panel-inner">
+    <div class="panel-left">
+      <div style="width:110px;height:110px;border-radius:14px;overflow:hidden;border:3px solid #ff6eb0;box-shadow:4px 4px 0 #111,0 0 20px rgba(0,0,0,.3)">
+        <img src="/images/Alli8.png" alt="Jacaré" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="pl-name" style="font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:#fffef5;margin-top:8px">Jacaré</div>
+      <div class="pl-energy" style="font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#ff6eb0;margin-top:4px">VIRTUDE: RESILIÊNCIA</div>
+    </div>
+    <div class="panel-right">
+      <p class="pr-desc" style="font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.8);margin-bottom:16px">O Jacaré é forte e protetor. Enfrenta desafios sem recuar e defende quem ama com coragem. Sua jornada é descobrir que mostrar sensibilidade também é sinal de força.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="pr-v pchip" style="background:rgba(58,158,58,.2);border-color:rgba(58,158,58,.4);color:#8ecf3a">✨ Liderança</span>
+        <span class="pr-s pchip" style="background:rgba(220,60,60,.15);border-color:rgba(220,60,60,.3);color:#ff9090">🌑 Intimidação</span>
+      </div>
+      <div style="background:rgba(240,197,32,.07);border:1px solid rgba(240,197,32,.15);border-radius:12px;padding:14px 16px">
+        <div class="pr-grow-label" style="font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:#f0c520;margin-bottom:6px">CRESCIMENTO</div>
+        <p class="pr-grow" style="font-size:.9rem;font-weight:700;line-height:1.75;color:rgba(255,254,245,.75);margin:0">A verdadeira força protege sem ferir.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="beast-panel" id="bpanel-8" style="display:none;--col:2">
+  <button class="panel-close" onclick="closePanel(8)">✕</button>
+  <div class="panel-inner">
+    <div class="panel-left">
+      <div style="width:110px;height:110px;border-radius:14px;overflow:hidden;border:3px solid #8ecf3a;box-shadow:4px 4px 0 #111,0 0 20px rgba(0,0,0,.3)">
+        <img src="/images/Sloth9.png" alt="Preguiça" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div class="pl-name" style="font-family:'Fredoka One',sans-serif;font-size:1.6rem;color:#fffef5;margin-top:8px">Preguiça</div>
+      <div class="pl-energy" style="font-size:.78rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#8ecf3a;margin-top:4px">VIRTUDE: HARMONIA</div>
+    </div>
+    <div class="panel-right">
+      <p class="pr-desc" style="font-size:.97rem;font-weight:700;line-height:1.85;color:rgba(255,254,245,.8);margin-bottom:16px">A Preguiça valoriza a paz e a união. Tranquila e acolhedora, gosta de ver todos bem. Aprende que sua voz também importa e que expressar suas ideias fortalece a harmonia.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+        <span class="pr-v pchip" style="background:rgba(58,158,58,.2);border-color:rgba(58,158,58,.4);color:#8ecf3a">✨ Serenidade</span>
+        <span class="pr-s pchip" style="background:rgba(220,60,60,.15);border-color:rgba(220,60,60,.3);color:#ff9090">🌑 Passividade</span>
+      </div>
+      <div style="background:rgba(240,197,32,.07);border:1px solid rgba(240,197,32,.15);border-radius:12px;padding:14px 16px">
+        <div class="pr-grow-label" style="font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:2px;color:#f0c520;margin-bottom:6px">CRESCIMENTO</div>
+        <p class="pr-grow" style="font-size:.9rem;font-weight:700;line-height:1.75;color:rgba(255,254,245,.75);margin:0">Sua opinião é valiosa. A paz também nasce da verdade.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</section>
+
+<!-- ══════════ LORE ══════════ -->
+<section id="lore" class="sec" style="background:linear-gradient(180deg,var(--bg) 0%,#071407 100%)">
+  <div style="text-align:center;margin-bottom:60px">
+    <div class="sec-tag rv" data-t="lore_tag">✦ A Origem</div>
+    <h2 class="sec-h rv" data-t="lore_h">A história da <span class="acc">selva</span></h2>
+  </div>
+  <div class="lore-grid" style="max-width:820px;margin:60px auto 0;display:flex;flex-direction:column;gap:70px">
+    <!-- Ch 1 -->
+    <div class="rv" style="display:grid;grid-template-columns:100px 1fr;gap:28px;align-items:start">
+      <div style="font-family:'Fredoka One',sans-serif;font-size:6rem;color:rgba(240,197,32,.07);line-height:1;text-align:right;padding-top:6px">01</div>
+      <div>
+        <h3 class="lore-title" data-t="ch1_t">A Primeira Semente</h3>
+        <p class="lore-body" data-t="ch1_body">Ninguém sabe exatamente quando aconteceu.<br>No início, havia apenas energia. E uma única semente surgiu.<br>Ela carregava nove forças que não existiam em nenhum outro lugar.<br>Caiu no centro da terra e ali ficou.<br>Esperando.</p>
+      </div>
+    </div>
+    <!-- Ch 2 -->
+    <div class="rv rv2" style="display:grid;grid-template-columns:100px 1fr;gap:28px;align-items:start">
+      <div style="font-family:'Fredoka One',sans-serif;font-size:6rem;color:rgba(240,197,32,.07);line-height:1;text-align:right;padding-top:6px">02</div>
+      <div>
+        <h3 class="lore-title" data-t="ch2_t">A Grande Árvore</h3>
+        <p class="lore-body" data-t="ch2_body">Quando finalmente cresceu, não era uma árvore comum.<br>Suas raízes atravessavam a selva inteira e seus galhos tocavam o céu.<br>Dela, emanam as nove virtudes, que agora estão em cada ser vivo do planeta.<br>E enquanto essas virtudes permanecem em equilíbrio, tudo floresce.<br>Mas, às vezes algo muda, sombras começam a aparecer.<br>E a selva sente.</p>
+      </div>
+    </div>
+    <!-- Ch 3 -->
+    <div class="rv rv3" style="display:grid;grid-template-columns:100px 1fr;gap:28px;align-items:start">
+      <div style="font-family:'Fredoka One',sans-serif;font-size:6rem;color:rgba(240,197,32,.07);line-height:1;text-align:right;padding-top:6px">03</div>
+      <div>
+        <h3 class="lore-title" data-t="ch3_t">As Feraz</h3>
+        <p class="lore-body" data-t="ch3_body">Quando as sombras começaram a se espalhar, nove Feraz despertaram.<br>Nenhuma foi escolhida por acaso — cada uma carrega uma das virtudes.<br>Elas ainda não sabem o que realmente enfrentam. Não sabem quem é o inimigo.<br>Mas sabem que, se o equilíbrio se romper, a selva inteira muda.<br>E, talvez, nunca volte a ser a mesma.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ QUIZ ══════════ -->
+<section id="quiz">
+  <div class="sec-tag rv" data-t="quiz_tag">✦ Descoberta</div>
+  <h2 class="sec-h rv" style="text-align:center" data-t="quiz_h">Qual das<span class="acc">Ferinhaz</span> é você?</h2>
+  <div class="quiz-box rv">
+    <div id="qintro">
+      <div class="quiz-orb">🌿</div>
+      <div class="quiz-h" data-t="quiz_head">Descubra sua virtude</div>
+      <p class="quiz-s" data-t="quiz_sub">Faça o Quiz, responda com sinceridade e encontre a energia que ressoa dentro de você.</p>
+      <a class="btn-p" id="quiz-link" href="/quiz.html?lang=pt" target="_blank" rel="noopener" data-t="quiz_start" style="text-decoration:none;display:inline-block">🌿 Começar o Quiz</a>
+    </div>
+    <div id="qflow">
+      <div class="ql-bar"><span class="ql-n" id="qln">1/5</span><div class="ql-t"><div class="ql-f" id="qlf" style="width:20%"></div></div><span class="ql-n" id="qlp">20%</span></div>
+      <div class="qt-t" id="qtt"></div>
+      <div class="qopts" id="qopts"></div>
+    </div>
+    <div id="qdone">
+      <div class="re" id="re"></div><div class="rn" id="rn"></div><div class="rd" id="rd"></div>
+      <div class="rc" id="rc"></div><div class="rg" id="rg"></div>
+      <button class="btn-p" onclick="resetQ()" data-t="quiz_redo" style="margin-top:10px">🌀 Refazer</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ COMUNIDADE ══════════ -->
+<section id="comunidade">
+  <div class="com-tl rv" data-t="com_tl">"A selva cresce<br>com <span class="acc">você.</span>"</div>
+  <div style="text-align:center;margin-bottom:40px">
+    <a class="btn-p" href="https://discord.gg/RTmRH4X3Uw" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block" data-t="com_cta">🌿 Quero Entrar</a>
+  </div>
+  <div class="com-cards">
+    <div class="com-card rv"><div class="com-icon">🌐</div><h3 class="com-title" data-t="c1t">Comunidade Feraz</h3><p class="com-text" data-t="c1b">Conecte-se com guardiões do mundo inteiro que compartilham e aprendem com as ferinhaz.</p></div>
+    <div class="com-card rv rv2"><div class="com-icon">🎨</div><h3 class="com-title" data-t="c2t">Co-Criação</h3><p class="com-text" data-t="c2b">Histórias,Arte, Música e Aplicações das Ferinhaz. O universo cresce com cada nova voz que entra nele.</p></div>
+    <div class="com-card rv rv3"><div class="com-icon">✨</div><h3 class="com-title" data-t="c3t">Identidade Digital</h3><p class="com-text" data-t="c3b">Em breve, sua essência como extensão digital. Uma presença única no universo Feraz.</p></div>
+    <div class="com-card rv rv4"><div class="com-icon">🎪</div><h3 class="com-title"><span data-t="c4t">Eventos da Selva</span> <span class="soon">Em Breve</span></h3><p class="com-text" data-t="c4b">Cerimônias, Rituais, Encontros e Festivais que celebram a Selva.</p></div>
+  </div>
+</section>
+
+<!-- ══════════ JORNADA ══════════ -->
+<section id="jornada">
+  <div style="text-align:center">
+    <div class="sec-tag rv" data-t="j_tag">✦ Capítulos</div>
+    <h2 class="sec-h rv" data-t="j_h">A<span class="acc">Jornada</span></h2>
+  </div>
+  <div class="journey-path">
+    <div class="jstep"><div class="jcard rv rv1"><div class="jcap" data-t="j1c">Capítulo I</div><div class="jtitle" data-t="j1t">🌱 Fundação da Selva</div><p class="jdesc" data-t="j1d">O universo Feraz desperta. As nove ferinhaz são reveladas.</p><span class="jstatus st-a" data-t="j1s">▶ Em andamento</span></div><div class="jnode active">I</div><div class="jemp"></div></div>
+    <div class="jstep"><div class="jemp"></div><div class="jnode">II</div><div class="jcard rv rv2"><div class="jcap" data-t="j2c">Capítulo II</div><div class="jtitle" data-t="j2t">🔮 Descoberta das Virtudes</div><p class="jdesc" data-t="j2d">Histórias de cada Feraz reveladas. Experiências chegam ao mundo. A comunidade nasce.</p><span class="jstatus st-a" data-t="j2s">⚡ Em Andamento</span></div></div>
+    <div class="jstep"><div class="jcard rv rv3" style="opacity:.55"><div class="jcap" data-t="j3c">Capítulo III</div><div class="jtitle" data-t="j3t">🌐 Comunidade Viva</div><p class="jdesc" data-t="j3d">Guardiões do mundo se conectam. Eventos presenciais. Co-criação coletiva.</p><span class="jstatus st-l" data-t="j3s">🔒 Bloqueado</span></div><div class="jnode locked">III</div><div class="jemp"></div></div>
+    <div class="jstep"><div class="jemp"></div><div class="jnode locked">IV</div><div class="jcard rv rv4" style="opacity:.4"><div class="jcap" data-t="j4c">Capítulo IV</div><div class="jtitle" data-t="j4t">🌍 Expansão Global</div><p class="jdesc" data-t="j4d">IP transmídia. Animação. Livros. Música. A selva chega a todos os cantos do planeta.</p><span class="jstatus st-l" data-t="j4s">🔒 Bloqueado</span></div></div>
+  </div>
+</section>
+
+<!-- ══════════ NOVIDADES ══════════ -->
+<section id="novidades" style="padding:100px 48px;background:linear-gradient(180deg,#081808,var(--bg));text-align:center">
+  <div style="text-align:center;margin-bottom:60px">
+    <div class="sec-tag rv" data-t="nov_tag">✦ Universo Feraz</div>
+    <h2 class="sec-h rv" data-t="nov_h2">O Mundo <span class="acc">Feraz</span> Cresce</h2>
+  </div>
+  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px">
+
+    <!-- Card 1: Livro -->
+    <div class="rv" style="background:rgba(255,255,255,.03);border:2px solid rgba(240,197,32,.2);border-radius:20px;overflow:hidden;box-shadow:6px 6px 0 #111;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translate(-4px,-4px)';this.style.boxShadow='10px 10px 0 #111'" onmouseout="this.style.transform='';this.style.boxShadow='6px 6px 0 #111'">
+      <div style="width:100%;aspect-ratio:1;overflow:hidden;background:#0a1a0a">
+        <img src="/images/Book.png" alt="Livro Feraz" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div style="padding:22px;flex:1;display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'Fredoka One',sans-serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--yel)" data-t="nov_b1_tag">📚 Livro Infantil</div>
+        <div style="font-family:'Fredoka One',sans-serif;font-size:1.1rem;color:var(--cream);line-height:1.3" data-t="nov_b1_title">O Grande Jogo na Selva</div>
+        <p style="font-size:.82rem;font-weight:700;color:rgba(255,254,245,.6);line-height:1.7;flex:1" data-t="nov_b1_desc">Cheio de cores, risadas e lições, é uma história cativante sobre como cada pessoa, com suas habilidades únicas, faz a diferença. Perfeito para jovens leitores!</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a href="https://www.amazon.com.br/gp/product/6501699509" target="_blank" style="flex:1;text-align:center;background:var(--green);color:var(--cream);border:3px solid #111;box-shadow:3px 3px 0 #111;padding:9px 12px;border-radius:50px;font-family:'Fredoka One',sans-serif;font-size:.78rem;letter-spacing:1px;text-decoration:none;transition:all .2s" onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='5px 5px 0 #111'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 #111'" data-t="nov_b1_btn1">🇧🇷 Amazon Brasil</a>
+          <a href="https://www.amazon.com/dp/B0FTFFFZHD" target="_blank" style="flex:1;text-align:center;background:rgba(255,255,255,.08);color:var(--cream);border:3px solid rgba(255,255,255,.2);box-shadow:3px 3px 0 #111;padding:9px 12px;border-radius:50px;font-family:'Fredoka One',sans-serif;font-size:.78rem;letter-spacing:1px;text-decoration:none;transition:all .2s" onmouseover="this.style.transform='translate(-2px,-2px)';this.style.boxShadow='5px 5px 0 #111'" onmouseout="this.style.transform='';this.style.boxShadow='3px 3px 0 #111'" data-t="nov_b1_btn2">🌍 Amazon Global</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Escola -->
+    <div class="rv" style="background:rgba(255,255,255,.03);border:2px solid rgba(240,197,32,.2);border-radius:20px;overflow:hidden;box-shadow:6px 6px 0 #111;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translate(-4px,-4px)';this.style.boxShadow='10px 10px 0 #111'" onmouseout="this.style.transform='';this.style.boxShadow='6px 6px 0 #111'">
+      <div style="width:100%;aspect-ratio:1;overflow:hidden;background:#0a1a0a">
+        <img src="/images/School.png" alt="Feraz na Escola" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div style="padding:22px;flex:1;display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'Fredoka One',sans-serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--yel)" data-t="nov_b2_tag">🏫 Educação</div>
+        <div style="font-family:'Fredoka One',sans-serif;font-size:1.1rem;color:var(--cream);line-height:1.3" data-t="nov_b2_title">Feraz na Escola</div>
+        <p style="font-size:.82rem;font-weight:700;color:rgba(255,254,245,.6);line-height:1.7;flex:1" data-t="nov_b2_desc">Professores estão usando nossos personagens para atividades de colorir e conteúdo educativo com crianças de até 6 anos. O futuro começa na imaginação dos pequenos.</p>
+      </div>
+    </div>
+
+    <!-- Card 3: Giphy -->
+    <div class="rv" style="background:rgba(255,255,255,.03);border:2px solid rgba(240,197,32,.2);border-radius:20px;overflow:hidden;box-shadow:6px 6px 0 #111;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translate(-4px,-4px)';this.style.boxShadow='10px 10px 0 #111'" onmouseout="this.style.transform='';this.style.boxShadow='6px 6px 0 #111'">
+      <div style="width:100%;aspect-ratio:1;overflow:hidden;background:#0a1a0a">
+        <img src="/images/giphyy.png" alt="Feraz Giphy" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div style="padding:22px;flex:1;display:flex;flex-direction:column;gap:12px">
+        <div style="font-family:'Fredoka One',sans-serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--yel)" data-t="nov_b3_tag">📈 Presença Digital</div>
+        <div style="font-family:'Fredoka One',sans-serif;font-size:1.1rem;color:var(--cream);line-height:1.3" data-t="nov_b3_title">100M+ Views no Giphy</div>
+        <p style="font-size:.82rem;font-weight:700;color:rgba(255,254,245,.6);line-height:1.7;flex:1" data-t="nov_b3_desc">Ultrapassamos 100 milhões de visualizações, superando grandes marcas do mercado. Uma marca que domina a linguagem da nova era se mantém no topo das tendências globais.</p>
+      </div>
+    </div>
+
+    <!-- Card 4: Em breve -->
+    <div class="rv" style="background:rgba(255,255,255,.02);border:2px solid rgba(240,197,32,.08);border-radius:20px;overflow:hidden;box-shadow:6px 6px 0 #111;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:380px;text-align:center;padding:40px 24px">
+      <div style="font-size:3.5rem;margin-bottom:16px;opacity:.3">🌿</div>
+      <div style="font-family:'Fredoka One',sans-serif;font-size:1.2rem;color:rgba(255,254,245,.25);letter-spacing:2px" data-t="nov_b4_title">Em breve...</div>
+      <div style="width:48px;height:3px;background:rgba(240,197,32,.15);border-radius:4px;margin-top:16px"></div>
+    </div>
+
+  </div>
+</section>
+<!-- ══════════ DIGITAL ══════════ -->
+<section id="digital">
+  <div class="dig-box rv">
+    <div class="dig-badge" data-t="dig_b">Em Breve · Coming Soon</div>
+    <h3 class="dig-title" data-t="dig_t">Sua Energia como<br>Extensão Digital</h3>
+    <p class="dig-body" data-t="dig_d">Uma identidade única que carrega sua essência pelo universo Feraz. Mais do que um perfil — uma presença viva no coração da selva.</p>
+    <button class="btn-o" data-t="dig_cta">Quero ser notificado →</button>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="foot-content">
+    <!-- FERAZ footer logo — faithful to reference: yellow bg, black outline, green 3D letters -->
+    <div class="foot-logo">
+      <svg viewBox="0 0 320 82" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="fshadow">
+            <feDropShadow dx="3" dy="4" stdDeviation="2" flood-color="rgba(0,0,0,0.5)"/>
+          </filter>
+        </defs>
+        <!-- Yellow rounded pill background — exactly like reference -->
+        <rect x="4" y="4" width="312" height="74" rx="18" fill="#f0c520" filter="url(#fshadow)"/>
+        <rect x="4" y="4" width="312" height="74" rx="18" fill="none" stroke="#111" stroke-width="5"/>
+        <!-- Inner white shine top -->
+        <path d="M22 10 Q100 7 160 10" stroke="rgba(255,255,255,0.45)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- FERAZ yellow halo (makes letters pop from yellow bg) -->
+        <text x="160" y="66" text-anchor="middle" font-family="'Fredoka One',sans-serif" font-size="60"
+          fill="#111" stroke="#111" stroke-width="16" paint-order="stroke fill" letter-spacing="4">FERAZ</text>
+        <!-- Green letters fill -->
+        <text x="160" y="66" text-anchor="middle" font-family="'Fredoka One',sans-serif" font-size="60"
+          fill="#3a9e3a" stroke="#111" stroke-width="5" paint-order="stroke fill" letter-spacing="4">FERAZ</text>
+        <!-- White shine on letters -->
+        <text x="160" y="66" text-anchor="middle" font-family="'Fredoka One',sans-serif" font-size="60"
+          fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2.5" letter-spacing="4">FERAZ</text>
+      </svg>
+    </div>
+    <ul class="foot-links">
+      <li><a href="#beastz" data-t="nav_beastz">Feraz</a></li>
+      <li><a href="#lore" data-t="nav_lore">Lore</a></li>
+      <li><a href="#quiz" data-t="nav_essence">Virtudes</a></li>
+      <li><a href="#comunidade" data-t="nav_community">Comunidade</a></li>
+      <li><a href="#jornada" data-t="nav_journey">Jornada</a></li>
+      <li><a href="https://x.com/feraz_xyz" target="_blank" rel="noopener">Twitter</a></li>
+      <li><a href="https://discord.gg/RTmRH4X3Uw" target="_blank" rel="noopener">Discord</a></li>
+      <li><a href="https://opensea.io/collection/feraz" target="_blank" rel="noopener">OpenSea</a></li>
+      <li><a href="https://feraz.xyz/ip-rights" target="_blank" rel="noopener">IP Rights</a></li>
+      <li><a href="https://feraz.xyz/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a></li>
+    </ul>
+    <div class="foot-copy">© 2026 FERAZ · Todos os direitos reservados</div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   FERAZ — ARQUIVO DE CONFIGURAÇÃO
+   ============================================================
+   Edite aqui qualquer texto ou imagem do site.
+   Depois de salvar, o site atualiza automaticamente.
+
+   COMO ADICIONAR IMAGENS:
+   1. Faça upload da imagem no WordPress (Mídia → Adicionar)
+   2. Clique na imagem → "Copiar URL do arquivo"
+   3. Cole a URL entre as aspas abaixo
+   ============================================================ */
+
+const FERAZ_CONFIG = {
+
+  /* ----------------------------------------------------------
+     LOGO
+     Cole a URL da sua logo (PNG ou SVG com fundo transparente)
+  ---------------------------------------------------------- */
+  logo_url: 'https://feraz.xyz/wp-content/uploads/2024/10/Untitled_design__34_-removebg-preview.png',
+                  // deixe vazio ('') para usar o logo SVG padrão do código
+
+  /* ----------------------------------------------------------
+     HERO — Bloco 1 (imagem de fundo da selva)
+  ---------------------------------------------------------- */
+  hero_image_url: '',  // ex: 'https://seusite.com/wp-content/uploads/selva-hero.jpg'
+                       // deixe vazio ('') para manter o fundo escuro padrão
+
+  /* ----------------------------------------------------------
+     GUARDIÕES — As 9 Ferinhas
+     Para cada ferinha você pode editar:
+       imagem    → URL da foto/ilustração
+       e         → emoji (aparece quando não há imagem)
+       n / nEN / nES  → nome em PT / EN / ES
+       en / enEN / enES → energia em PT / EN / ES
+       v / vEN   → virtude (botão verde) em PT / EN
+       sh / shEN → sombra (botão vermelho) em PT / EN
+       desc      → descrição no card expandido (PT)
+       grow      → conselho no card expandido (PT)
+       bg        → cor de fundo do card (gradiente CSS)
+       acc       → cor de destaque do card
+  ---------------------------------------------------------- */
+  guardioes: [
+
+    {
+      id: 'aguia',
+      imagem: '',               // ← Cole aqui a URL da imagem da Águia
+      e: '🦅',
+      n: 'Águia',               nEN: 'Eagle',           nES: 'Águila',
+      en: 'Visão & Propósito',  enEN: 'Vision & Purpose', enES: 'Visión & Propósito',
+      v: 'Perspectiva elevada', vEN: 'Elevated Perspective',
+      sh: 'Perfeccionismo',     shEN: 'Perfectionism',
+      desc: 'A Águia enxerga além do horizonte. Carrega a visão que guia a selva — mas deve aprender que o perfeito é inimigo do real.',
+      grow: 'Permita-se errar. A descida também faz parte do voo.',
+      bg: 'linear-gradient(145deg,#0a1e3a,#0a1610)',
+      acc: '#4db8d4',
+    },
+
+    {
+      id: 'leao',
+      imagem: '',               // ← Cole aqui a URL da imagem do Leão
+      e: '🦁',
+      n: 'Leão',                nEN: 'Lion',             nES: 'León',
+      en: 'Força & Liderança',  enEN: 'Strength & Leadership', enES: 'Fuerza & Liderazgo',
+      v: 'Proteção natural',    vEN: 'Natural Protection',
+      sh: 'Controle',           shEN: 'Control',
+      desc: 'O Leão nasceu para guiar e proteger. Cuida da matilha — mas às vezes confunde proteção com controle.',
+      grow: 'A verdadeira força sabe quando soltar.',
+      bg: 'linear-gradient(145deg,#3a1a00,#1a0a00)',
+      acc: '#ffb830',
+    },
+
+    {
+      id: 'elefante',
+      imagem: '',               // ← Cole aqui a URL da imagem do Elefante
+      e: '🐘',
+      n: 'Elefante',            nEN: 'Elephant',         nES: 'Elefante',
+      en: 'Memória & Cuidado',  enEN: 'Memory & Care',   enES: 'Memoria & Cuidado',
+      v: 'Presença amorosa',    vEN: 'Loving Presence',
+      sh: 'Autoanulação',       shEN: 'Self-erasure',
+      desc: 'O Elefante carrega a sabedoria dos séculos. Nunca esquece — mas precisa lembrar de cuidar de si mesmo.',
+      grow: 'Seus sonhos merecem tanto espaço quanto os dos outros.',
+      bg: 'linear-gradient(145deg,#0e1a2e,#0a100e)',
+      acc: '#8ecf3a',
+    },
+
+    {
+      id: 'coruja',
+      imagem: '',               // ← Cole aqui a URL da imagem da Coruja
+      e: '🦉',
+      n: 'Coruja',              nEN: 'Owl',              nES: 'Búho',
+      en: 'Sabedoria & Análise', enEN: 'Wisdom & Analysis', enES: 'Sabiduría & Análisis',
+      v: 'Clareza mental',      vEN: 'Mental Clarity',
+      sh: 'Isolamento',         shEN: 'Isolation',
+      desc: 'A Coruja vê na escuridão o que outros não enxergam. Guarda os segredos do conhecimento — mas sabedoria precisa ser compartilhada.',
+      grow: 'O saber que não se conecta ao outro permanece incompleto.',
+      bg: 'linear-gradient(145deg,#180a30,#0a0810)',
+      acc: '#a97cde',
+    },
+
+    {
+      id: 'serpente',
+      imagem: '',               // ← Cole aqui a URL da imagem da Serpente
+      e: '🐍',
+      n: 'Serpente',            nEN: 'Serpent',          nES: 'Serpiente',
+      en: 'Transformação & Intuição', enEN: 'Transformation & Intuition', enES: 'Transformación & Intuición',
+      v: 'Renovação constante', vEN: 'Constant Renewal',
+      sh: 'Desconfiança',       shEN: 'Distrust',
+      desc: 'A Serpente muda de pele quando necessário. Transforma crises em recomeços — mas deve aprender a confiar.',
+      grow: 'Nem tudo é uma ameaça. Abrir-se ao mundo também é poder.',
+      bg: 'linear-gradient(145deg,#0a2a14,#061208)',
+      acc: '#2ec4b6',
+    },
+
+    {
+      id: 'leopardo',
+      imagem: '',               // ← Cole aqui a URL da imagem do Leopardo
+      e: '🐆',
+      n: 'Leopardo',            nEN: 'Leopard',          nES: 'Leopardo',
+      en: 'Ação & Conquista',   enEN: 'Action & Achievement', enES: 'Acción & Conquista',
+      v: 'Execução precisa',    vEN: 'Precise Execution',
+      sh: 'Impaciência',        shEN: 'Impatience',
+      desc: 'O Leopardo age enquanto os outros pensam. Conquista com elegância — mas a pressa pode pular etapas essenciais.',
+      grow: 'O verdadeiro triunfo combina velocidade com profundidade.',
+      bg: 'linear-gradient(145deg,#2a1600,#180c00)',
+      acc: '#ff8c38',
+    },
+
+    {
+      id: 'macaco',
+      imagem: '',               // ← Cole aqui a URL da imagem do Macaco
+      e: '🐒',
+      n: 'Macaco',              nEN: 'Monkey',           nES: 'Mono',
+      en: 'Alegria & Conexão',  enEN: 'Joy & Connection', enES: 'Alegría & Conexión',
+      v: 'Criatividade espontânea', vEN: 'Spontaneous Creativity',
+      sh: 'Dispersão',          shEN: 'Dispersion',
+      desc: 'O Macaco transforma o mundano em festa. Conecta, cria e anima — mas precisa aprender a terminar o que começa.',
+      grow: 'A alegria mais profunda vem do compromisso, não da novidade.',
+      bg: 'linear-gradient(145deg,#2a1800,#1a0c00)',
+      acc: '#ffd166',
+    },
+
+    {
+      id: 'arara',
+      imagem: '',               // ← Cole aqui a URL da imagem da Arara
+      e: '🦜',
+      n: 'Arara',               nEN: 'Macaw',            nES: 'Guacamayo',
+      en: 'Expressão & Beleza', enEN: 'Expression & Beauty', enES: 'Expresión & Belleza',
+      v: 'Comunicação vibrante', vEN: 'Vibrant Communication',
+      sh: 'Superficialidade',   shEN: 'Superficiality',
+      desc: 'A Arara faz o mundo mais colorido só por existir. Canta, conta e encanta — mas às vezes precisa escutar tanto quanto fala.',
+      grow: 'Sua voz é mais poderosa quando vem de silêncio interior.',
+      bg: 'linear-gradient(145deg,#0a2a14,#061008)',
+      acc: '#ff6eb0',
+    },
+
+    {
+      id: 'tartaruga',
+      imagem: '',               // ← Cole aqui a URL da imagem da Tartaruga
+      e: '🐢',
+      n: 'Tartaruga',           nEN: 'Turtle',           nES: 'Tortuga',
+      en: 'Paz & Paciência',    enEN: 'Peace & Patience', enES: 'Paz & Paciencia',
+      v: 'Serenidade profunda', vEN: 'Deep Serenity',
+      sh: 'Inércia',            shEN: 'Inertia',
+      desc: 'A Tartaruga carrega seu lar onde quer que vá. Encontra paz onde outros veem caos — mas a calma não pode virar imobilidade.',
+      grow: 'A paz verdadeira é equilíbrio em meio ao movimento.',
+      bg: 'linear-gradient(145deg,#0a2216,#061008)',
+      acc: '#8ecf3a',
+    },
+
+  ], // ← não remova esta vírgula
+
+}; // ← não remova este ponto-e-vírgula
+
+</script>
+<script>
+/* ── MOBILE MENU ── */
+function toggleMenu(){
+  const h=document.getElementById('nav-ham'),d=document.getElementById('nav-drawer');
+  const open=d.classList.toggle('open');
+  h.classList.toggle('open',open);
+}
+function closeMenu(){
+  document.getElementById('nav-drawer').classList.remove('open');
+  document.getElementById('nav-ham').classList.remove('open');
+}
+document.addEventListener('click',e=>{
+  const d=document.getElementById('nav-drawer'),h=document.getElementById('nav-ham');
+  if(d&&d.classList.contains('open')&&!d.contains(e.target)&&!h.contains(e.target))closeMenu();
+});
+
+/* ── CURSOR ── */
+if(window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+  document.body.style.cursor='none';
+  document.querySelectorAll('*').forEach(el=>{if(getComputedStyle(el).cursor==='auto')el.style.cursor='none'});
+  const cur=document.getElementById('cur'),cr=document.getElementById('cur-r');
+  cur.style.display='block';cr.style.display='block';
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+  (function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(a)})();
+  document.querySelectorAll('button,a').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.style.width='22px';cur.style.height='22px'});el.addEventListener('mouseleave',()=>{cur.style.width='14px';cur.style.height='14px'})});
+}
+
+/* ── LANG TOGGLE ── */
+let langOpen=false;
+function toggleLang(){
+  langOpen=!langOpen;
+  document.getElementById('lang-dd').classList.toggle('open',langOpen);
+  document.getElementById('lang-cur').classList.toggle('open',langOpen);
+  document.getElementById('lang-arrow').style.transform=langOpen?'rotate(180deg)':'';
+}
+function closeLang(){
+  langOpen=false;
+  document.getElementById('lang-dd').classList.remove('open');
+  document.getElementById('lang-cur').classList.remove('open');
+  document.getElementById('lang-arrow').style.transform='';
+}
+// Close when clicking outside
+document.addEventListener('click',e=>{
+  if(!document.getElementById('lang-wrap').contains(e.target))closeLang();
+});
+
+/* ══════════ I18N ══════════ */
+const FLAGS={pt:'🇧🇷',en:'🇺🇸',es:'🇪🇸'};
+const LABELS={pt:'PT',en:'EN',es:'ES'};
+
+const T={
+pt:{
+  nav_beastz:'Feraz',nav_lore:'Lore',nav_essence:'Virtudes',nav_community:'Comunidade',nav_journey:'Jornada',
+  cta:'🌿 Entrar na Selva',btn_enter:'🌿 Entrar na Selva',btn_beastz:'Comprar Feraz',scroll:'Explore',
+  bz_tag:'✦ Os Guardiões',bz_h:'Conheça as <span class="acc">Ferinhaz!</span>',
+  bz_sub:'Cada uma das Feraz possui uma energia única, uma virtude.',
+  lore_tag:'✦ A Origem',lore_h:'A história da <span class="acc">Selva</span>',
+  ch1_t:'A Primeira Semente',ch1_b1:'No princípio, uma única semente caiu no coração da terra. Ela carregava as nove energias primordiais.',ch1_b2:'Ela esperou — até o momento certo para florescer.',
+  ch2_t:'A Grande Árvore',ch2_b1:'A semente floresceu em algo nunca visto — a Grande Árvore, coração pulsante da selva.',ch2_b2:'Seus frutos dourados guardam as nove energias que dão origem às Feraz.',
+  ch3_t:'As Feraz',ch3_b1:'Nove Feraz foram convocadas pela Grande Árvore. Cada uma portando uma energia.',ch3_b2:'Juntas, as ferinhaz formam o equilíbrio que sustenta toda a selva.',
+  slot_amazon:'🌳 Floresta Amazônica',slot_iguassu:'💧 Cataratas do Iguaçu',slot_rio:'🏖️ Rio de Janeiro',
+  foot_amazon:'🌳 Floresta Amazônica',foot_iguassu:'💧 Cataratas do Iguaçu',foot_rio:'🏖️ Rio de Janeiro',
+  quiz_tag:'✦ Descoberta',quiz_h:'Qual <span class="acc">Ferinha</span> é você?',quiz_head:'Descubra sua virtude',
+  quiz_sub:'Faça o Quiz, responda com sinceridade e encontre a energia que ressoa dentro de você.',
+  quiz_start:'🌿 Começar o Quiz',quiz_redo:'🌀 Refazer',
+  com_tl:'"A selva cresce<br>com <span class="acc">você.</span>"',
+  c1t:'Comunidade Feraz',c1b:'Conecte-se com guardiões do mundo inteiro que compartilham e aprendem com as ferinhaz.',
+  c2t:'Co-Criação',c2b:'Histórias, Arte, Música e Aplicações das Ferinhaz. O universo cresce com cada nova voz que entra nele.',
+  c3t:'Identidade Digital',c3b:'Em breve, sua essência como extensão digital. Uma presença única no universo Feraz.',
+  c4t:'Eventos da Selva',c4b:'Cerimônias, Rituais, Encontros e Festivais que celebram a Selva.',
+  j_tag:'✦ Capítulos',j_h:'A Jornada da <span class="acc">Selva</span>',
+  j1c:'Capítulo I',j1t:'🌱 Fundação da Selva',j1d:'O universo Feraz desperta. As nove Feraz são reveladas. A Árvore da Vida floresce.',j1s:'▶ Em andamento',
+  j2c:'Capítulo II',j2t:'🔮 Descoberta das Virtudes',j2d:'Histórias de cada Ferinha revelada. Experiências chegam ao mundo. A comunidade nasce.',j2s:'⚡ Em andamento',
+  j3c:'Capítulo III',j3t:'🌐 Comunidade Viva',j3d:'Guardiões do mundo se conectam. Eventos presenciais. Co-criação coletiva.',j3s:'🔒 Bloqueado',
+  j4c:'Capítulo IV',j4t:'🌍 Expansão Global',j4d:'IP transmídia. Animação. Produtos Físicos, Livros. Música. A selva chega a todos os cantos do planeta.',j4s:'🔒 Bloqueado',
+  dig_b:'Em Breve · Coming Soon',dig_t:'Sua Energia como<br>Extensão Digital',dig_d:'Uma identidade única que carrega sua essência pelo universo Feraz.',dig_cta:'Quero ser notificado →',ch1_body:'Ninguém sabe exatamente quando aconteceu.<br>No início, havia apenas energia. E uma única semente surgiu.<br>Ela carregava nove forças que não existiam em nenhum outro lugar.<br>Caiu no centro da terra e ali ficou.<br>Esperando.',ch2_body:'Quando finalmente cresceu, não era uma árvore comum.<br>Suas raízes atravessavam a selva inteira e seus galhos tocavam o céu.<br>Dela, emanam as nove virtudes, que agora estão em cada ser vivo do planeta.<br>E enquanto essas virtudes permanecem em equilíbrio, tudo floresce.<br>Mas, às vezes algo muda, sombras começam a aparecer.<br>E a selva sente.',ch3_body:'Quando as sombras começaram a se espalhar, nove Feraz despertaram.<br>Nenhuma foi escolhida por acaso — cada uma carrega uma das virtudes.<br>Elas ainda não sabem o que realmente enfrentam. Não sabem quem é o inimigo.<br>Mas sabem que, se o equilíbrio se romper, a selva inteira muda.<br>E, talvez, nunca volte a ser a mesma.',nov_h2:'O Mundo Feraz Cresce',nov_h:'Feraz',com_cta:'🌿 Quero Entrar',nov_tag:'✦ Universo Feraz',nov_b1_tag:'📚 Livro Infantil',nov_b1_title:'O Grande Jogo na Selva',nov_b1_desc:'Cheio de cores, risadas e lições, é uma história cativante sobre como cada pessoa, com suas habilidades únicas, faz a diferença. Perfeito para jovens leitores!',nov_b1_btn1:'🇧🇷 Amazon Brasil',nov_b1_btn2:'🌍 Amazon Global',nov_b2_tag:'🏫 Educação',nov_b2_title:'Feraz na Escola',nov_b2_desc:'Professores estão usando nossos personagens para atividades de colorir e conteúdo educativo com crianças de até 6 anos. O futuro começa na imaginação dos pequenos.',nov_b3_tag:'📈 Presença Digital',nov_b3_title:'100M+ Views no Giphy',nov_b3_desc:'Ultrapassamos 100 milhões de visualizações, superando grandes marcas do mercado. Uma marca que domina a linguagem da nova era se mantém no topo das tendências globais.',nov_b4_title:'Em breve...',
+},
+en:{
+  nav_beastz:'Feraz',nav_lore:'Lore',nav_essence:'Virtues',nav_community:'Community',nav_journey:'Journey',
+  cta:'🌿 Enter the Jungle',btn_enter:'🌿 Enter the Jungle',btn_beastz:'Buy Feraz',scroll:'Explore',
+  bz_tag:'✦ The Guardians',bz_h:'Meet the <span class="acc">Beastz!</span>',
+  bz_sub:'Each Feraz carries a unique energy, a virtue.',
+  lore_tag:'✦ The Origin',lore_h:'The story of <span class="acc">the jungle</span>',
+  ch1_t:'The First Seed',ch1_b1:'In the beginning, a single seed fell to the heart of the earth. It carried the nine primordial energies.',ch1_b2:'It waited — until the right moment to bloom.',
+  ch2_t:'The Great Tree',ch2_b1:'The seed bloomed into something never seen — the Great Tree, the pulsing heart of the jungle.',ch2_b2:'Its golden fruits hold the nine energies that give birth to The Feraz.',
+  ch3_t:'The Beastz',ch3_b1:'Nine Feraz were summoned by the Great Tree. Each bearing an energy.',ch3_b2:'Together, the Beastz form the balance that sustains all of the jungle.',
+  slot_amazon:'🌳 Amazon Rainforest',slot_iguassu:'💧 Iguazu Falls',slot_rio:'🏖️ Rio de Janeiro',
+  foot_amazon:'🌳 Amazon Rainforest',foot_iguassu:'💧 Iguazu Falls',foot_rio:'🏖️ Rio de Janeiro',
+  quiz_tag:'✦ Discovery',quiz_h:'Which <span class="acc">Beazt</span> are you?',quiz_head:'Discover your virtue',
+  quiz_sub:'Take the Quiz, answer sincerely and find the energy that resonates within you.',
+  quiz_start:'🌿 Start the Quiz',quiz_redo:'🌀 Try Again',
+  com_tl:'"The jungle grows<br>with <span class="acc">you.</span>"',
+  c1t:'Feraz Community',c1b:'Connect with guardians from around the world who share and learn from the different energies of the Beastz.',
+  c2t:'Co-Creation',c2b:'Stories, Art, Music and Apps of Feraz. The universe grows with each new voice that enters it..',
+  c3t:'Digital Identity',c3b:'Soon, your essence as a digital extension. A unique presence in the Feraz universe.',
+  c4t:'Jungle Events',c4b:'Ceremonies, Rituals, Gatherings and Festivals that celebrate the Jungle.',
+  j_tag:'✦ Chapters',j_h:'The <span class="acc">Jungle</span> Journey',
+  j1c:'Chapter I',j1t:'🌱 Jungle Foundation',j1d:'The Feraz universe awakens. The nine Beastz are revealed. The Tree of Life blooms.',j1s:'▶ In Progress',
+  j2c:'Chapter II',j2t:'🔮 Discovery of Virtues',j2d:'Each Feraz story revealed. Experiences arrive in the world. The community is born.',j2s:'▶ In Progress',
+  j3c:'Chapter III',j3t:'🌐 Living Community',j3d:'Guardians from around the world connect. Live events. Collective co-creation.',j3s:'🔒 Locked',
+  j4c:'Chapter IV',j4t:'🌍 Global Expansion',j4d:'Transmedia IP. Animation. Physical Products, Books. Music. The jungle reaches every corner of the planet..',j4s:'🔒 Locked',
+  dig_b:'Coming Soon',dig_t:'Your Energy as a<br>Digital Extension',dig_d:'A unique identity that carries your essence through the Feraz universe.',dig_cta:'Notify me →',ch1_body:'No one knows exactly when it happened.<br>In the beginning, there was only energy. And a single seed emerged.<br>It carried nine forces that existed nowhere else.<br>It fell to the center of the earth and stayed there.<br>Waiting.',ch2_body:'When it finally grew, it was no ordinary tree.<br>Its roots crossed the entire jungle and its branches touched the sky.<br>From it, the nine virtues emanate, now present in every living being on the planet.<br>And as long as these virtues remain in balance, everything flourishes.<br>But sometimes something changes, shadows begin to appear.<br>And the jungle feels it.',ch3_body:'When the shadows began to spread, nine Feraz awakened.<br>None were chosen by chance — each carries one of the virtues.<br>They do not yet know what they truly face. They do not know who the enemy is.<br>But they know that if the balance breaks, the entire jungle changes.<br>And perhaps it will never be the same again.',nov_h2:'The Feraz World Grows',nov_h:'Feraz',com_cta:'🌿 Join Us',nov_tag:'✦ Feraz Universe',nov_b1_tag:'📚 Children\'s Book',nov_b1_title:'The Great Jungle Game',nov_b1_desc:'Full of colors, laughter and lessons, it is a captivating story about how each person, with their unique abilities, makes a difference. Perfect for young readers!',nov_b1_btn1:'🇧🇷 Amazon Brasil',nov_b1_btn2:'🌍 Amazon Global',nov_b2_tag:'🏫 Education',nov_b2_title:'Feraz at School',nov_b2_desc:'Teachers are using our characters for coloring activities and educational content with children up to 6 years old. The future begins in the imagination of the little ones.',nov_b3_tag:'📈 Digital Presence',nov_b3_title:'100M+ Views on Giphy',nov_b3_desc:'We surpassed 100 million views, outperforming major established brands. A brand that dominates the language of the new era and stays at the top of global trends.',nov_b4_title:'Coming soon...',
+},
+es:{
+  nav_beastz:'Feraz',nav_lore:'Lore',nav_essence:'Virtudes',nav_community:'Comunidad',nav_journey:'Jornada',
+  cta:'🌿 Entrar a la Selva',btn_enter:'🌿 Entrar a la Selva',btn_beastz:'Comprar Feraz',scroll:'Explorar',
+  bz_tag:'✦ Los Guardianes',bz_h:'Conoce las <span class="acc">Biestaz!</span>',
+  bz_sub:'Cada Feraz lleva una energía única, una virtud.',
+  lore_tag:'✦ El Origen',lore_h:'La historia de <span class="acc">la selva</span>',
+  ch1_t:'La Primera Semilla',ch1_b1:'En el principio, una única semilla cayó al corazón de la tierra. Llevaba las nueve energías primordiales.',ch1_b2:'Esperó — hasta el momento correcto para florecer.',
+  ch2_t:'El Gran Árbol',ch2_b1:'La semilla floreció en algo nunca visto — el Gran Árbol, corazón de la selva.',ch2_b2:'Sus frutos dorados guardan las nueve energías que dan origen a Las Biestaz.',
+  ch3_t:'Las Biestaz',ch3_b1:'Nueve Biestaz fueron convocadas por el Gran Árbol. Cada una portando una energía.',ch3_b2:'Juntas, las Biestaz forman el equilibrio que sostiene toda la selva.',
+  slot_amazon:'🌳 Selva Amazónica',slot_iguassu:'💧 Cataratas del Iguazú',slot_rio:'🏖️ Río de Janeiro',
+  foot_amazon:'🌳 Selva Amazónica',foot_iguassu:'💧 Cataratas del Iguazú',foot_rio:'🏖️ Río de Janeiro',
+  quiz_tag:'✦ Descubrimiento',quiz_h:'¿Cuál <span class="acc">Biesta</span> eres?',quiz_head:'Descubre tu virtud',
+  quiz_sub:'Haz el Quiz, responde con sinceridad y encuentra la energía que resuena dentro de ti.',
+  quiz_start:'🌿 Comenzar el Quiz',quiz_redo:'🌀 Repetir',
+  com_tl:'"La selva crece<br>contigo <span class="acc">.</span>"',
+  c1t:'Comunidad Feraz',c1b:'Conéctate con guardianes de todo el mundo que comparten y aprenden de las distintas energías de las Biestaz.',
+  c2t:'Co-Creación',c2b:'Historias, arte, música y apps de Feraz. El universo crece con cada nueva voz que lo habita..',
+  c3t:'Identidad Digital',c3b:'Pronto, tu esencia como extensión digital. Una presencia única en el universo Feraz.',
+  c4t:'Eventos de la Selva',c4b:'Ceremonias, rituales, reuniones y festivales que celebran la selva.',
+  j_tag:'✦ Capítulos',j_h:'El Viaje de la <span class="acc">Selva</span>',
+  j1c:'Capítulo I',j1t:'🌱 Fundación de la Selva',j1d:'El universo Feraz despierta. Las nueve Biestaz son reveladas. El Gran Árbol florece.',j1s:'▶ En curso',
+  j2c:'Capítulo II',j2t:'🔮 Descubrimiento de Virtudes',j2d:'Historias de cada biezta reveladas. Experiencias llegan al mundo. La comunidad nace.',j2s:'⚡ En curso',
+  j3c:'Capítulo III',j3t:'🌐 Comunidad Viva',j3d:'Guardianes del mundo se conectan. Eventos presenciales. Co-creación colectiva.',j3s:'🔒 Bloqueado',
+  j4c:'Capítulo IV',j4t:'🌍 Expansión Global',j4d:'IP transmedia. Animación. Productos Físicos, Libros. Música. La selva llega a todos los rincones del planeta.',j4s:'🔒 Bloqueado',
+  dig_b:'Próximamente',dig_t:'Tu Energía como<br>Extensión Digital',dig_d:'Una identidad única que lleva tu esencia por el universo Feraz.',dig_cta:'Quiero ser notificado →',ch1_body:'Nadie sabe exactamente cuándo ocurrió.<br>Al principio, solo había energía. Y una única semilla surgió.<br>Llevaba nueve fuerzas que no existían en ningún otro lugar.<br>Cayó en el centro de la tierra y allí se quedó.<br>Esperando.',ch2_body:'Cuando finalmente creció, no era un árbol común.<br>Sus raíces atravesaban toda la selva y sus ramas tocaban el cielo.<br>De ella emanan las nueve virtudes, que ahora están en cada ser vivo del planeta.<br>Y mientras estas virtudes permanecen en equilibrio, todo florece.<br>Pero a veces algo cambia, las sombras comienzan a aparecer.<br>Y la selva lo siente.',ch3_body:'Cuando las sombras comenzaron a extenderse, nueve Biestaz despertaron.<br>Ninguna fue elegida por casualidad — cada una lleva una de las virtudes.<br>Aún no saben a qué se enfrentan realmente. No saben quién es el enemigo.<br>Pero saben que si el equilibrio se rompe, toda la selva cambia.<br>Y quizás nunca vuelva a ser la misma.',nov_h2:'El Mundo Feraz Crece',nov_h:'Feraz',com_cta:'🌿 Unirse',nov_tag:'✦ Universo Feraz',nov_b1_tag:'📚 Libro Infantil',nov_b1_title:'El Gran Juego en la Selva',nov_b1_desc:'Lleno de colores, risas y lecciones, es una historia cautivadora sobre cómo cada persona, con sus habilidades únicas, marca la diferencia. ¡Perfecto para jóvenes lectores!',nov_b1_btn1:'🇧🇷 Amazon Brasil',nov_b1_btn2:'🌍 Amazon Global',nov_b2_tag:'🏫 Educación',nov_b2_title:'Feraz en la Escuela',nov_b2_desc:'Profesores están usando nuestros personajes para actividades de colorear y contenido educativo con niños de hasta 6 años. El futuro comienza en la imaginación de los pequeños.',nov_b3_tag:'📈 Presencia Digital',nov_b3_title:'100M+ Vistas en Giphy',nov_b3_desc:'Superamos los 100 millones de visualizaciones, superando grandes marcas del mercado. Una marca que domina el lenguaje de la nueva era y se mantiene en lo más alto de las tendencias globales.',nov_b4_title:'Próximamente...',
+}};
+
+let LANG='pt';
+function setLang(l){
+  LANG=l;
+  const ql=document.getElementById('quiz-link');
+  if(ql) ql.href='/quiz.html?lang='+l;
+  // Re-render open panel in new language
+  if(activeIdx!==null) renderPanelText(activeIdx);
+  try{localStorage.setItem('feraz_lang',l);}catch(e){}
+  document.getElementById('lang-flag').textContent=FLAGS[l];
+  document.getElementById('lang-label').textContent=LABELS[l];
+  document.querySelectorAll('.lang-opt').forEach(b=>b.classList.toggle('active',b.textContent.includes(LABELS[l])));
+  document.querySelectorAll('[data-t]').forEach(el=>{
+    const k=el.getAttribute('data-t');
+    if(T[l][k]!==undefined)el.innerHTML=T[l][k];
+  });
+  if(document.getElementById('qflow').style.display==='block')renderQ();
+}
+
+/* Geo-detect language */
+(async()=>{
+  try{
+    const r=await fetch('https://ipapi.co/json/');
+    const d=await r.json();
+    const cc=(d.country_code||'').toUpperCase();
+    const LATAM=['MX','CO','AR','CL','PE','VE','EC','BO','UY','PY','CR','GT','HN','NI','PA','DO','CU','PR','SV'];
+    const SPAIN=['ES'];
+    if(cc==='BR')setLang('pt');
+    else if(LATAM.includes(cc)||SPAIN.includes(cc))setLang('es');
+    else setLang('en');
+  }catch(e){
+    // Default to PT if geo fails
+    setLang('pt');
+  }
+})();
+
+/* ══════════ FERAZ — STATIC CARDS (no JS build needed) ══════════ */
+// Cards are rendered directly in HTML — only need tilt + panel logic
+
+// 3D tilt on all cards
+document.querySelectorAll('.beast-card').forEach(c=>{
+  c.addEventListener('mousemove',e=>{
+    const r=c.getBoundingClientRect();
+    const xPct=(e.clientX-r.left)/r.width-0.5;
+    const yPct=(e.clientY-r.top)/r.height-0.5;
+    c.style.transform=`perspective(800px) rotateX(${-yPct*14}deg) rotateY(${xPct*14}deg) translateY(-12px) scale(1.03)`;
+  });
+  c.addEventListener('mouseleave',()=>{c.style.transform='perspective(800px) rotateX(2deg)'});
+});
+
+/* EXPAND PANEL LOGIC — works with static HTML cards */
+/* Panel translations for lang switching */
+const PANEL_TRANS = {
+  0: {
+    pt: {name:'Arara', energy:'VIRTUDE: HONESTIDADE', desc:'A Arara, símbolo de perfeição e beleza, sempre busca fazer a coisa certa. É a líder moral do grupo, mas precisa aprender a relaxar e curtir a vida.', v:'✨ Disciplina', s:'🌑 Perfeccionismo', grow:'Permita-se errar. A descida também faz parte do voo.'},
+    en: {name:'Macaw', energy:'VIRTUE: HONESTY', desc:'The Macaw, symbol of perfection and beauty, always seeks to do the right thing. The moral leader of the group — but must learn to relax and enjoy life.', v:'✨ Discipline', s:'🌑 Perfectionism', grow:'Allow yourself to fail. The descent is also part of the flight.'},
+    es: {name:'Guacamayo', energy:'VIRTUD: HONESTIDAD', desc:'El Guacamayo, símbolo de perfección y belleza, siempre busca hacer lo correcto. El líder moral del grupo — pero debe aprender a relajarse y disfrutar la vida.', v:'✨ Disciplina', s:'🌑 Perfeccionismo', grow:'Permítete fallar. El descenso también es parte del vuelo.'},
+  },
+  1: {
+    pt: {name:'Cachorro Caramelo', energy:'VIRTUDE: GENEROSIDADE', desc:'O Cachorro Caramelo é puro coração. Sempre atento, está pronto para ajudar e espalhar alegria por onde passa. É o abraço seguro do grupo, mas precisa lembrar que também merece cuidado.', v:'✨ Afeto', s:'🌑 Autoesquecimento', grow:'Amar também é saber receber. Cuide de si com o mesmo carinho que oferece ao mundo.'},
+    en: {name:'Caramel Dog', energy:'VIRTUE: GENEROSITY', desc:'The Caramel Dog is pure heart. Always attentive, ready to help and spread joy wherever it goes. The safe embrace of the group — but must remember it also deserves care.', v:'✨ Affection', s:'🌑 Self-forgetting', grow:'Loving also means knowing how to receive. Care for yourself with the same warmth you give the world.'},
+    es: {name:'Perro Caramelo', energy:'VIRTUD: GENEROSIDAD', desc:'El Perro Caramelo es puro corazón. Siempre atento, listo para ayudar y esparcir alegría. El abrazo seguro del grupo — pero debe recordar que también merece cuidado.', v:'✨ Afecto', s:'🌑 Olvido de sí', grow:'Amar también es saber recibir. Cuídate con el mismo cariño que ofreces al mundo.'},
+  },
+  2: {
+    pt: {name:'Onça', energy:'VIRTUDE: DETERMINAÇÃO', desc:'A Onça-pintada é foco e conquista. Ágil e confiante, busca ser a melhor em tudo o que faz. Sua força a leva longe, mas ela aprende que o verdadeiro sucesso floresce quando há amor junto com vitória.', v:'✨ Confiança', s:'🌑 Competitividade', grow:'Você vale mais do que seus resultados. O brilho que vem de dentro é o que mais permanece.'},
+    en: {name:'Jaguar', energy:'VIRTUE: DETERMINATION', desc:'The Jaguar is focus and achievement. Agile and confident, always striving to be the best. Its strength takes it far — but it learns that true success blooms when love accompanies victory.', v:'✨ Confidence', s:'🌑 Competitiveness', grow:'You are worth more than your results. The light that comes from within is what endures most.'},
+    es: {name:'Jaguar', energy:'VIRTUD: DETERMINACIÓN', desc:'El Jaguar es foco y conquista. Ágil y seguro, busca ser el mejor en todo. Su fuerza lo lleva lejos — pero aprende que el éxito verdadero florece cuando hay amor junto a la victoria.', v:'✨ Confianza', s:'🌑 Competitividad', grow:'Vales más que tus resultados. El brillo que viene de dentro es el que más permanece.'},
+  },
+  3: {
+    pt: {name:'Mico-Leão-Dourado', energy:'VIRTUDE: CRIATIVIDADE', desc:'O Mico-leão-dourado enxerga cores onde ninguém mais vê. Sensível e sonhador, transforma sentimentos em arte. Sua missão é perceber que seu jeito único é um presente para o grupo.', v:'✨ Originalidade', s:'🌑 Melancolia', grow:'Sua diferença é sua força. Compartilhe sua luz — o mundo precisa dela.'},
+    en: {name:'Golden Lion Tamarin', energy:'VIRTUE: CREATIVITY', desc:'The Golden Lion Tamarin sees colors where no one else does. Sensitive and dreamy, it transforms feelings into art. Its mission is to realize that its unique way is a gift to the group.', v:'✨ Originality', s:'🌑 Melancholy', grow:'Your difference is your strength. Share your light — the world needs it.'},
+    es: {name:'Tití León Dorado', energy:'VIRTUD: CREATIVIDAD', desc:'El Tití León Dorado ve colores donde nadie más los ve. Sensible y soñador, transforma sentimientos en arte. Su misión es percibir que su forma única es un regalo para el grupo.', v:'✨ Originalidad', s:'🌑 Melancolía', grow:'Tu diferencia es tu fuerza. Comparte tu luz — el mundo la necesita.'},
+  },
+  4: {
+    pt: {name:'Coruja', energy:'VIRTUDE: SABEDORIA', desc:'A Coruja observa em silêncio e pensa antes de agir. Curiosa e inteligente, encontra respostas onde outros veem mistério. Mas aprende que dividir sentimentos também é uma forma de conhecimento.', v:'✨ Clareza', s:'🌑 Isolamento', grow:'Conhecer é importante. Conectar é essencial.'},
+    en: {name:'Owl', energy:'VIRTUE: WISDOM', desc:'The Owl observes in silence and thinks before acting. Curious and intelligent, it finds answers where others see mystery. But it learns that sharing feelings is also a form of knowledge.', v:'✨ Clarity', s:'🌑 Isolation', grow:'Knowing is important. Connecting is essential.'},
+    es: {name:'Búho', energy:'VIRTUD: SABIDURÍA', desc:'El Búho observa en silencio y piensa antes de actuar. Curioso e inteligente, encuentra respuestas donde otros ven misterio. Pero aprende que compartir sentimientos también es una forma de conocimiento.', v:'✨ Claridad', s:'🌑 Aislamiento', grow:'Conocer es importante. Conectar es esencial.'},
+  },
+  5: {
+    pt: {name:'Passarinho', energy:'VIRTUDE: CORAGEM', desc:'O Passarinho é leal e atento. Está sempre cuidando dos amigos e antecipando perigos. Seu coração protetor aprende que confiar em si mesma também é um ato de bravura.', v:'✨ Lealdade', s:'🌑 Ansiedade', grow:'Confie nas suas asas. Você já sabe voar.'},
+    en: {name:'Bird', energy:'VIRTUE: COURAGE', desc:'The Bird is loyal and attentive. Always watching over friends and anticipating dangers. Its protective heart learns that trusting itself is also an act of bravery.', v:'✨ Loyalty', s:'🌑 Anxiety', grow:'Trust your wings. You already know how to fly.'},
+    es: {name:'Pájaro', energy:'VIRTUD: VALENTÍA', desc:'El Pájaro es leal y atento. Siempre cuidando a los amigos y anticipando peligros. Su corazón protector aprende que confiar en sí mismo también es un acto de valentía.', v:'✨ Lealtad', s:'🌑 Ansiedad', grow:'Confía en tus alas. Ya sabes volar.'},
+  },
+  6: {
+    pt: {name:'Tucano', energy:'VIRTUDE: OTIMISMO', desc:'O Tucano vive com entusiasmo e alegria. Ama aventuras e espalha energia por onde passa. Seu desafio é descobrir que a felicidade também mora nos momentos simples.', v:'✨ Entusiasmo', s:'🌑 Dispersão', grow:'O presente é o maior dos tesouros. Fique aqui e aproveite.'},
+    en: {name:'Toucan', energy:'VIRTUE: OPTIMISM', desc:'The Toucan lives with enthusiasm and joy. Loves adventures and spreads energy wherever it goes. Its challenge is to discover that happiness also lives in simple moments.', v:'✨ Enthusiasm', s:'🌑 Dispersion', grow:'The present is the greatest treasure. Stay here and enjoy it.'},
+    es: {name:'Tucán', energy:'VIRTUD: OPTIMISMO', desc:'El Tucán vive con entusiasmo y alegría. Ama las aventuras y esparce energía. Su desafío es descubrir que la felicidad también vive en los momentos simples.', v:'✨ Entusiasmo', s:'🌑 Dispersión', grow:'El presente es el mayor tesoro. Quédate aquí y disfrútalo.'},
+  },
+  7: {
+    pt: {name:'Jacaré', energy:'VIRTUDE: RESILIÊNCIA', desc:'O Jacaré é forte e protetor. Enfrenta desafios sem recuar e defende quem ama com coragem. Sua jornada é descobrir que mostrar sensibilidade também é sinal de força.', v:'✨ Liderança', s:'🌑 Intimidação', grow:'A verdadeira força protege sem ferir.'},
+    en: {name:'Alligator', energy:'VIRTUE: RESILIENCE', desc:'The Alligator is strong and protective. Faces challenges without backing down and defends those it loves with courage. Its journey is discovering that showing sensitivity is also a sign of strength.', v:'✨ Leadership', s:'🌑 Intimidation', grow:'True strength protects without hurting.'},
+    es: {name:'Caimán', energy:'VIRTUD: RESILIENCIA', desc:'El Caimán es fuerte y protector. Enfrenta desafíos sin retroceder y defiende a quienes ama. Su viaje es descubrir que mostrar sensibilidad también es señal de fuerza.', v:'✨ Liderazgo', s:'🌑 Intimidación', grow:'La verdadera fuerza protege sin herir.'},
+  },
+  8: {
+    pt: {name:'Preguiça', energy:'VIRTUDE: HARMONIA', desc:'A Preguiça valoriza a paz e a união. Tranquila e acolhedora, gosta de ver todos bem. Aprende que sua voz também importa e que expressar suas ideias fortalece a harmonia.', v:'✨ Serenidade', s:'🌑 Passividade', grow:'Sua opinião é valiosa. A paz também nasce da verdade.'},
+    en: {name:'Sloth', energy:'VIRTUE: HARMONY', desc:'The Sloth values peace and unity. Calm and welcoming, it likes to see everyone doing well. It learns that its voice matters too and that expressing its ideas strengthens harmony.', v:'✨ Serenity', s:'🌑 Passivity', grow:'Your opinion is valuable. Peace is also born from truth.'},
+    es: {name:'Perezoso', energy:'VIRTUD: ARMONÍA', desc:'El Perezoso valora la paz y la unión. Tranquilo y acogedor, le gusta ver a todos bien. Aprende que su voz también importa y que expresar sus ideas fortalece la armonía.', v:'✨ Serenidad', s:'🌑 Pasividad', grow:'Tu opinión es valiosa. La paz también nace de la verdad.'},
+  },
+};
+
+function getPanelLang(){ return LANG||'pt'; }
+
+function renderPanelText(idx){
+  const panel = document.getElementById('bpanel-'+idx);
+  if(!panel) return;
+  const l = getPanelLang();
+  const t = (PANEL_TRANS[idx]&&PANEL_TRANS[idx][l]) || (PANEL_TRANS[idx]&&PANEL_TRANS[idx].pt) || {};
+  if(t.name) { const el=panel.querySelector('.pl-name'); if(el) el.textContent=t.name; }
+  if(t.energy) { const el=panel.querySelector('.pl-energy'); if(el) el.textContent=t.energy; }
+  if(t.desc) { const el=panel.querySelector('.pr-desc'); if(el) el.textContent=t.desc; }
+  if(t.v) { const el=panel.querySelector('.pr-v'); if(el) el.textContent=t.v; }
+  if(t.s) { const el=panel.querySelector('.pr-s'); if(el) el.textContent=t.s; }
+  if(t.grow) { const el=panel.querySelector('.pr-grow'); if(el) el.textContent=t.grow; }
+  const gl=panel.querySelector('.pr-grow-label');
+  if(gl) gl.textContent=l==='en'?'GROWTH':l==='es'?'CRECIMIENTO':'CRESCIMENTO';
+}
+
+let activeIdx = null;
+
+function togglePanel(idx){
+  const panel = document.getElementById('bpanel-'+idx);
+  const card  = document.getElementById('bcard-'+idx);
+  if(!panel) return;
+
+  // Clicking same card again → close
+  if(activeIdx === idx){
+    panel.style.display = 'none';
+    card.classList.remove('active-card');
+    activeIdx = null;
+    return;
+  }
+
+  // Close previously open panel
+  if(activeIdx !== null){
+    const prev = document.getElementById('bpanel-'+activeIdx);
+    const prevCard = document.getElementById('bcard-'+activeIdx);
+    if(prev) prev.style.display = 'none';
+    if(prevCard) prevCard.classList.remove('active-card');
+  }
+
+  // Open this panel
+  panel.style.display = 'block';
+  card.classList.add('active-card');
+  activeIdx = idx;
+  renderPanelText(idx);
+  setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+}
+
+function closePanel(idx){
+  const panel = document.getElementById('bpanel-'+idx);
+  const card  = document.getElementById('bcard-'+idx);
+  if(panel) panel.style.display = 'none';
+  if(card)  card.classList.remove('active-card');
+  activeIdx = null;
+}
+
+// Legacy stub so old calls don't error
+function buildPanel(f){
+  const nm=LANG==='pt'?f.n:LANG==='en'?f.nEN:f.nES;
+  const en=LANG==='pt'?f.en:LANG==='en'?f.enEN:f.enES;
+  const vt=LANG==='pt'?f.v:f.vEN;
+  const sh=LANG==='pt'?f.sh:f.shEN;
+  const arrowLeft=16+Math.floor(parseInt(f.id==='aguia'?0:f.id==='leao'?1:f.id==='elefante'?2:f.id==='coruja'?0:f.id==='serpente'?1:f.id==='leopardo'?2:f.id==='macaco'?0:f.id==='arara'?1:2)*33.33+16.5)+'%';
+  const panel=document.createElement('div');
+  panel.className='beast-panel open';
+  panel.id='panel-'+f.id;
+  panel.style.setProperty('--arrow-left',arrowLeft);
+  panel.innerHTML=`
+    <button class="panel-close" onclick="closePanel(event)">✕</button>
+    <div class="panel-inner">
+      <div class="panel-emoji" style="color:${f.acc}">${f.e}</div>
+      <div class="panel-body">
+        <div class="panel-name">${f.e} ${nm}</div>
+        <div class="panel-energy">${en}</div>
+        <p class="panel-desc">${f.desc}</p>
+        <div class="panel-chips">
+          <span class="pchip pc-v">✨ ${vt}</span>
+          <span class="pchip pc-s">🌑 ${sh}</span>
+        </div>
+        <p class="panel-grow">💡 ${f.grow}</p>
+      </div>
+    </div>`;
+  return panel;
+}
+
+
+
+/* ══════════ QUIZ ══════════ */
+const QS={
+pt:[
+  {q:"Quando está em grupo, você naturalmente...",opts:[{t:"Organiza e define o que precisa ser feito",p:{aguia:2,leao:1}},{t:"Cuida de todos — ninguém fica para trás",p:{elefante:2,macaco:1}},{t:"Observa e espera o momento certo para agir",p:{coruja:2,serpente:1}},{t:"Traz energia e anima o ambiente",p:{arara:2,macaco:1}}]},
+  {q:"O que te move mais profundamente?",opts:[{t:"Alcançar resultados extraordinários",p:{aguia:2,leopardo:1}},{t:"Manter paz e equilíbrio entre todos",p:{tartaruga:2,elefante:1}},{t:"Entender os padrões ocultos do mundo",p:{coruja:2,serpente:1}},{t:"Sentir que tudo ao redor é autêntico",p:{leao:2,aguia:1}}]},
+  {q:"Seu maior desafio pessoal:",opts:[{t:"Não querer controlar tudo ao meu redor",p:{leao:2,aguia:1}},{t:"Não me preocupar tanto com aprovação",p:{macaco:2,arara:1}},{t:"Aprender a dizer não",p:{elefante:2,tartaruga:1}},{t:"Agir em vez de só analisar",p:{coruja:2,serpente:1}}]},
+  {q:"Em um dia difícil, você busca...",opts:[{t:"Silêncio e solidão para recarregar",p:{serpente:2,coruja:1}},{t:"Abraço e conexão com quem ama",p:{elefante:2,arara:1}},{t:"Uma solução prática e imediata",p:{leopardo:2,aguia:1}},{t:"Música, arte ou estar na natureza",p:{arara:2,macaco:1}}]},
+  {q:"Você se descreveria como...",opts:[{t:"Alguém que enxerga o que outros não veem",p:{aguia:2,coruja:1}},{t:"Alguém que cuida de todos ao redor",p:{elefante:2,tartaruga:1}},{t:"Alguém que transforma crises em oportunidade",p:{serpente:2,leopardo:1}},{t:"Alguém que ilumina o ambiente com presença",p:{arara:2,macaco:1}}]},
+],
+en:[
+  {q:"In a group, you naturally...",opts:[{t:"Organize and define what needs to be done",p:{aguia:2,leao:1}},{t:"Care for everyone — no one gets left behind",p:{elefante:2,macaco:1}},{t:"Observe and wait for the right moment",p:{coruja:2,serpente:1}},{t:"Bring energy and liven the space up",p:{arara:2,macaco:1}}]},
+  {q:"What moves you most deeply?",opts:[{t:"Achieving extraordinary results",p:{aguia:2,leopardo:1}},{t:"Keeping peace and harmony between everyone",p:{tartaruga:2,elefante:1}},{t:"Understanding the hidden patterns of the world",p:{coruja:2,serpente:1}},{t:"Feeling that everything around you is authentic",p:{leao:2,aguia:1}}]},
+  {q:"Your biggest personal challenge:",opts:[{t:"Not wanting to control everything around me",p:{leao:2,aguia:1}},{t:"Not worrying so much about others' approval",p:{macaco:2,arara:1}},{t:"Learning to say no",p:{elefante:2,tartaruga:1}},{t:"Acting instead of just analyzing",p:{coruja:2,serpente:1}}]},
+  {q:"On a hard day, you seek...",opts:[{t:"Silence and solitude to recharge",p:{serpente:2,coruja:1}},{t:"Hugs and connection with loved ones",p:{elefante:2,arara:1}},{t:"A practical and immediate solution",p:{leopardo:2,aguia:1}},{t:"Music, art or being in nature",p:{arara:2,macaco:1}}]},
+  {q:"You would describe yourself as...",opts:[{t:"Someone who sees what others can't",p:{aguia:2,coruja:1}},{t:"Someone who takes care of everyone around",p:{elefante:2,tartaruga:1}},{t:"Someone who turns crises into opportunities",p:{serpente:2,leopardo:1}},{t:"Someone who lights up every room",p:{arara:2,macaco:1}}]},
+],
+es:[
+  {q:"En un grupo, naturalmente...",opts:[{t:"Organizas y defines lo que hay que hacer",p:{aguia:2,leao:1}},{t:"Cuidas a todos — nadie se queda atrás",p:{elefante:2,macaco:1}},{t:"Observas y esperas el momento correcto",p:{coruja:2,serpente:1}},{t:"Traes energía y animas el ambiente",p:{arara:2,macaco:1}}]},
+  {q:"¿Qué te mueve más profundamente?",opts:[{t:"Alcanzar resultados extraordinarios",p:{aguia:2,leopardo:1}},{t:"Mantener paz y equilibrio entre todos",p:{tartaruga:2,elefante:1}},{t:"Entender los patrones ocultos del mundo",p:{coruja:2,serpente:1}},{t:"Sentir que todo a tu alrededor es auténtico",p:{leao:2,aguia:1}}]},
+  {q:"Tu mayor desafío personal:",opts:[{t:"No querer controlar todo a mi alrededor",p:{leao:2,aguia:1}},{t:"No preocuparme tanto por la aprobación",p:{macaco:2,arara:1}},{t:"Aprender a decir no",p:{elefante:2,tartaruga:1}},{t:"Actuar en vez de solo analizar",p:{coruja:2,serpente:1}}]},
+  {q:"En un día difícil, buscas...",opts:[{t:"Silencio y soledad para recargar",p:{serpente:2,coruja:1}},{t:"Abrazo y conexión con seres queridos",p:{elefante:2,arara:1}},{t:"Una solución práctica e inmediata",p:{leopardo:2,aguia:1}},{t:"Música, arte o estar en la naturaleza",p:{arara:2,macaco:1}}]},
+  {q:"Te describirías como...",opts:[{t:"Alguien que ve lo que otros no pueden",p:{aguia:2,coruja:1}},{t:"Alguien que cuida a todos a su alrededor",p:{elefante:2,tartaruga:1}},{t:"Alguien que transforma crisis en oportunidades",p:{serpente:2,leopardo:1}},{t:"Alguien que ilumina cada lugar con su presencia",p:{arara:2,macaco:1}}]},
+]};
+
+let scores={},qi=0;
+function startQ(){
+  scores=Object.fromEntries(FERAZ.map(f=>[f.id,0]));
+  qi=0;
+  document.getElementById('qintro').style.display='none';
+  document.getElementById('qflow').style.display='block';
+  renderQ();
+}
+function renderQ(){
+  const qs=QS[LANG];const p=qs[qi];
+  const pct=Math.round(((qi+1)/qs.length)*100);
+  document.getElementById('qln').textContent=`${qi+1}/${qs.length}`;
+  document.getElementById('qlf').style.width=pct+'%';
+  document.getElementById('qlp').textContent=pct+'%';
+  document.getElementById('qtt').textContent=p.q;
+  const oc=document.getElementById('qopts');oc.innerHTML='';
+  p.opts.forEach(o=>{
+    const b=document.createElement('button');b.className='qopt';b.textContent=o.t;
+    b.onclick=()=>{document.querySelectorAll('.qopt').forEach(x=>x.disabled=true);b.classList.add('chosen');Object.entries(o.p).forEach(([k,v])=>scores[k]=(scores[k]||0)+v);setTimeout(()=>{qi++;qi>=qs.length?showRes():renderQ()},480)};
+    oc.appendChild(b);
+  });
+}
+function showRes(){
+  document.getElementById('qflow').style.display='none';
+  const w=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+  const f=FERAZ.find(x=>x.id===w);
+  const nm=LANG==='pt'?f.n:LANG==='en'?f.nEN:f.nES;
+  const en=LANG==='pt'?f.en:LANG==='en'?f.enEN:f.enES;
+  const vt=LANG==='pt'?f.v:f.vEN;
+  const sh=LANG==='pt'?f.sh:f.shEN;
+  const prefix=LANG==='pt'?'Você é ':LANG==='en'?'You are the ':' Tu eres la ';
+  document.getElementById('re').textContent=f.e;
+  document.getElementById('rn').textContent=prefix+nm;
+  document.getElementById('rd').textContent=f.desc;
+  document.getElementById('rc').innerHTML=`<span class="rchip rc-e">⚡ ${en}</span><span class="rchip rc-v">✨ ${vt}</span><span class="rchip rc-s">🌑 ${sh}</span>`;
+  document.getElementById('rg').textContent='💡 '+f.grow;
+  document.getElementById('qdone').style.display='block';
+}
+function resetQ(){document.getElementById('qdone').style.display='none';document.getElementById('qintro').style.display='block'}
+
+/* ══════════ CONFIG INIT ══════════ */
+(function applyConfig(){
+  if(typeof FERAZ_CONFIG === 'undefined') return;
+  const cfg = FERAZ_CONFIG;
+
+  // LOGO — nav
+  if(cfg.logo_url){
+    const wrap = document.getElementById('nav-logo-wrap');
+    if(wrap){
+      wrap.innerHTML = '<img src="'+cfg.logo_url+'" alt="FERAZ" style="height:44px;width:auto;object-fit:contain">';
+    }
+    // LOGO — footer
+    const fLogo = document.querySelector('.foot-logo');
+    if(fLogo){
+      fLogo.innerHTML = '<img src="'+cfg.logo_url+'" alt="FERAZ" style="height:60px;width:auto;object-fit:contain">';
+    }
+  }
+
+  // HERO IMAGE
+  if(cfg.hero_image_url){
+    const placeholder = document.querySelector('.hero-img-placeholder');
+    if(placeholder){
+      const img = document.createElement('img');
+      img.src = cfg.hero_image_url;
+      img.alt = 'Selva Feraz';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center bottom';
+      placeholder.parentNode.replaceChild(img, placeholder);
+    }
+  }
+})();
+
+/* ══════════ REVEAL ══════════ */
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
