@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feraz Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--green:#3a9e3a;--gl:#2d8a2d;--yel:#f0c520;--yeld:#c89e10;--yell:#f8e060;--blk:#111;--cream:#fffef5;--bg:#0a2a0a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--cream);min-height:100vh;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 20%,rgba(58,158,58,.13) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(240,197,32,.07) 0%,transparent 50%),linear-gradient(160deg,#061206 0%,#0a2a0a 50%,#061a06 100%)}
+.bg::after{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.03) 1px,transparent 1px);background-size:32px 32px}
+.paw{position:fixed;font-size:1.8rem;opacity:.04;pointer-events:none;z-index:0}
+.p1{top:8%;left:5%}.p2{top:60%;left:2%;font-size:1.2rem}.p3{top:20%;right:4%;font-size:1.4rem}.p4{bottom:15%;right:6%}
+.wrap{position:relative;z-index:1;max-width:660px;margin:0 auto;padding:32px 16px 60px}
+.logo-wrap{text-align:center;margin-bottom:28px}
+.logo-wrap img{height:54px;width:auto;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5))}
+.card{background:rgba(10,20,10,.88);border:3px solid var(--yel);border-radius:24px;box-shadow:8px 8px 0 var(--blk),0 0 60px rgba(240,197,32,.08);backdrop-filter:blur(20px);overflow:hidden;animation:cardIn .7s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(28px) scale(.96)}to{opacity:1;transform:none}}
+.chead{background:linear-gradient(135deg,rgba(58,158,58,.28),rgba(240,197,32,.09));border-bottom:2px solid rgba(240,197,32,.22);padding:26px 32px 22px;text-align:center}
+.tag{display:inline-block;font-family:'Fredoka One',sans-serif;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;background:var(--yel);color:var(--blk);padding:4px 16px;border-radius:50px;border:2px solid var(--blk);box-shadow:3px 3px 0 var(--blk);margin-bottom:12px}
+.ctitle{font-family:'Fredoka One',sans-serif;font-size:clamp(1.4rem,4vw,2rem);color:var(--cream);text-shadow:2px 2px 0 var(--blk);line-height:1.2}
+.ctitle .acc{color:var(--yel)}
+.cbody{padding:30px}
+.orb{width:86px;height:86px;margin:0 auto 18px;border-radius:50%;background:radial-gradient(circle at 38% 36%,#fffce0,var(--yel) 50%,var(--yeld));border:4px solid var(--blk);box-shadow:4px 4px 0 var(--blk),0 0 28px rgba(240,197,32,.35);display:flex;align-items:center;justify-content:center;font-size:2.4rem;animation:orbB 3s ease-in-out infinite}
+@keyframes orbB{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.ititle{font-family:'Fredoka One',sans-serif;font-size:1.5rem;color:var(--yel);text-align:center;margin-bottom:10px;text-shadow:2px 2px 0 var(--blk)}
+.isub{text-align:center;font-size:.93rem;font-weight:600;color:rgba(255,254,245,.7);line-height:1.75;max-width:440px;margin:0 auto 26px}
+.bcenter{text-align:center}
+.btn-p{background:var(--green);color:var(--cream);border:4px solid var(--blk);padding:15px 42px;border-radius:50px;font-family:'Fredoka One',sans-serif;font-size:1.02rem;letter-spacing:1px;cursor:pointer;box-shadow:5px 5px 0 var(--blk);transition:all .2s;display:inline-block;text-decoration:none}
+.btn-p:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--blk);background:var(--gl)}
+.btn-o{background:var(--cream);color:var(--blk);border:4px solid var(--blk);padding:13px 34px;border-radius:50px;font-family:'Fredoka One',sans-serif;font-size:.98rem;letter-spacing:1px;cursor:pointer;box-shadow:5px 5px 0 var(--blk);transition:all .2s}
+.btn-o:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--blk);background:var(--yell)}
+.prog-wrap{margin-bottom:18px}
+.prog-labels{display:flex;justify-content:space-between;font-family:'Fredoka One',sans-serif;font-size:.76rem;letter-spacing:1px;color:rgba(240,197,32,.7);margin-bottom:7px}
+.prog-bar{height:6px;background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--yel));border-radius:10px;transition:width .4s ease}
+.qtext{font-family:'Fredoka One',sans-serif;font-size:clamp(1rem,2.4vw,1.25rem);color:var(--cream);line-height:1.4;margin-bottom:18px;text-shadow:1px 1px 0 rgba(0,0,0,.4)}
+.opts{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.opt{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.1);border-radius:13px;padding:12px 17px;font-family:'Nunito',sans-serif;font-size:.9rem;font-weight:700;color:rgba(255,254,245,.78);cursor:pointer;transition:all .2s;text-align:left;width:100%;line-height:1.3}
+.opt:hover{border-color:var(--yel);background:rgba(240,197,32,.08);transform:translateX(4px);color:var(--cream)}
+.opt.sel{background:rgba(58,158,58,.2);border-color:var(--green);color:var(--cream);box-shadow:0 0 0 1px var(--green)}
+.opt.sel::before{content:"\2713  ";color:var(--yel)}
+.navbtns{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.btn-nav{background:rgba(255,255,255,.07);border:2px solid rgba(255,255,255,.14);color:rgba(255,254,245,.55);border-radius:50px;padding:10px 22px;font-family:'Fredoka One',sans-serif;font-size:.86rem;letter-spacing:1px;cursor:pointer;transition:all .2s}
+.btn-nav:hover:not(:disabled){border-color:var(--yel);color:var(--yel);background:rgba(240,197,32,.08)}
+.btn-nav:disabled{opacity:.28;cursor:not-allowed}
+.btn-nxt{background:var(--green);color:var(--cream);border:3px solid var(--blk);box-shadow:4px 4px 0 var(--blk);padding:11px 26px}
+.btn-nxt:hover:not(:disabled){background:var(--gl);transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--blk);border-color:var(--blk);color:var(--cream)}
+.btn-nxt:disabled{background:rgba(58,158,58,.28);box-shadow:none;opacity:.45}
+.res{text-align:center}
+.acard{width:175px;height:175px;margin:0 auto 22px;border-radius:18px;overflow:hidden;border:4px solid var(--yel);box-shadow:6px 6px 0 var(--blk),0 0 38px rgba(240,197,32,.2);animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(.5) rotate(-8deg)}to{opacity:1;transform:none}}
+.acard img{width:100%;height:100%;object-fit:cover}
+.rname{font-family:'Fredoka One',sans-serif;font-size:clamp(1.8rem,5vw,2.6rem);color:var(--yel);text-shadow:3px 3px 0 var(--blk);margin-bottom:5px}
+.rsub{font-family:'Fredoka One',sans-serif;font-size:.95rem;color:rgba(255,254,245,.55);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+.rvirtue{display:inline-block;background:var(--yel);color:var(--blk);border:3px solid var(--blk);box-shadow:4px 4px 0 var(--blk);padding:7px 26px;border-radius:50px;font-family:'Fredoka One',sans-serif;font-size:.98rem;letter-spacing:1px;margin-bottom:22px}
+.rdesc{font-size:.92rem;font-weight:700;color:rgba(255,254,245,.72);line-height:1.8;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:18px 22px;margin-bottom:22px;text-align:left}
+.raction{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-x{background:#000;color:#fff;border:3px solid var(--blk);box-shadow:4px 4px 0 var(--blk);padding:11px 26px;border-radius:50px;font-family:'Fredoka One',sans-serif;font-size:.92rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px}
+.btn-x:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--blk)}
+.btn-x svg{width:16px;height:16px;fill:white}
+@media(max-width:580px){.cbody{padding:18px 14px}.chead{padding:18px 14px 16px}.acard{width:148px;height:148px}.raction{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="paw p1">&#x1F43E;</div>
+<div class="paw p2">&#x1F43E;</div>
+<div class="paw p3">&#x1F43E;</div>
+<div class="paw p4">&#x1F43E;</div>
+<div class="wrap">
+  <div class="logo-wrap">
+    <img src="https://feraz.xyz/wp-content/uploads/2024/10/Untitled_design__34_-removebg-preview.png" alt="FERAZ">
+  </div>
+  <div class="card">
+    <div class="chead">
+      <div class="tag" id="el-tag">&#x2736; Discovery</div>
+      <div class="ctitle" id="el-title">Which <span class="acc">Beazt</span> are you?</div>
+    </div>
+    <div class="cbody">
+      <div id="screen-intro">
+        <div class="orb">&#x1F33F;</div>
+        <div class="ititle" id="el-head">Discover your virtue</div>
+        <p class="isub" id="el-sub">Answer 9 questions honestly and find out which Feraz guardian carries your energy. Each Beazt holds a unique virtue.</p>
+        <div class="bcenter"><button class="btn-p" id="el-start" onclick="startQuiz()">&#x1F33F; Start the Quiz</button></div>
+      </div>
+      <div id="screen-quiz" style="display:none">
+        <div class="prog-wrap">
+          <div class="prog-labels"><span id="el-qlabel">Question 1 of 9</span><span id="el-qpct">0%</span></div>
+          <div class="prog-bar"><div class="prog-fill" id="el-prog" style="width:0%"></div></div>
+        </div>
+        <div id="el-qblock"></div>
+        <div class="navbtns">
+          <button class="btn-nav" id="btn-prev" onclick="goPrev()" disabled>Back</button>
+          <button class="btn-nav btn-nxt" id="btn-next" onclick="goNext()" disabled>Next</button>
+        </div>
+      </div>
+      <div id="screen-result" style="display:none"></div>
+    </div>
+  </div>
+</div>
+<script>
+var LANG = "en";
+
+function detectLang() {
+  var params = new URLSearchParams(window.location.search);
+  var p = params.get("lang");
+  if (p && (p==="pt"||p==="en"||p==="es")) return p;
+  try { var s=localStorage.getItem("feraz_lang"); if(s&&(s==="pt"||s==="en"||s==="es")) return s; } catch(e){}
+  var bl=(navigator.language||"en").toLowerCase();
+  if(bl.indexOf("pt")===0) return "pt";
+  if(bl.indexOf("es")===0) return "es";
+  return "en";
+}
+
+LANG = detectLang();
+
+fetch("https://ipapi.co/json/")
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var cc=(d.country_code||"").toUpperCase();
+    var LATAM=["MX","CO","AR","CL","PE","VE","EC","BO","UY","PY","CR","GT","HN","NI","PA","DO","CU","PR","SV"];
+    var det="en";
+    if(cc==="BR") det="pt";
+    else if(LATAM.indexOf(cc)>-1||cc==="ES") det="es";
+    if(det!==LANG){LANG=det;applyUI();}
+  }).catch(function(){});
+
+var UI = {
+  pt:{tag:"&#x2736; Descoberta",title:"Que <span class=\"acc\">Beazt</span> &#xe9; voc&#xea;?",head:"Descubra sua virtude",sub:"Responda 9 perguntas com sinceridade e descubra qual guardi&#xe3;o Feraz carrega a sua energia. Cada Beazt possui uma virtude &#xfa;nica.",start:"&#x1F33F; Come&#xe7;ar o Quiz",qlabel:"Pergunta",of:"de",back:"&#x2190; Voltar",next:"Pr&#xf3;ximo &#x2192;",see:"Ver minha Beazt &#x1F33F;",share:"Compartilhar no X",again:"&#x21BB; Refazer"},
+  en:{tag:"&#x2736; Discovery",title:"Which <span class=\"acc\">Beazt</span> are you?",head:"Discover your virtue",sub:"Answer 9 questions honestly and find out which Feraz guardian carries your energy. Each Beazt holds a unique virtue.",start:"&#x1F33F; Start the Quiz",qlabel:"Question",of:"of",back:"&#x2190; Back",next:"Next &#x2192;",see:"See my Beazt &#x1F33F;",share:"Share on X",again:"&#x21BB; Try Again"},
+  es:{tag:"&#x2736; Descubrimiento",title:"&#xbf;Cu&#xe1;l <span class=\"acc\">Beazt</span> eres?",head:"Descubre tu virtud",sub:"Responde 9 preguntas con sinceridad y descubre qu&#xe9; guardi&#xe1;n Feraz lleva tu energ&#xed;a. Cada Beazt tiene una virtud &#xfa;nica.",start:"&#x1F33F; Comenzar el Quiz",qlabel:"Pregunta",of:"de",back:"&#x2190; Anterior",next:"Siguiente &#x2192;",see:"Ver mi Beazt &#x1F33F;",share:"Compartir en X",again:"&#x21BB; Repetir"}
+};
+
+function applyUI(){
+  var u=UI[LANG]||UI.en;
+  document.getElementById("el-tag").innerHTML=u.tag;
+  document.getElementById("el-title").innerHTML=u.title;
+  document.getElementById("el-head").innerHTML=u.head;
+  document.getElementById("el-sub").innerHTML=u.sub;
+  document.getElementById("el-start").innerHTML=u.start;
+}
+applyUI();
+
+var animals={
+  en:{1:{name:"Macaw",img:"http://feraz.xyz/wp-content/uploads/2025/11/macaw.jpg",sub:"The Moral Leader",virtue:"Honesty",desc:"A disciplined spirit, always striving for perfection and doing what's right. A symbol of beauty and harmony, it reminds us to embrace honesty and sometimes just relax. &#x2728;"},2:{name:"Caramel Dog",img:"http://feraz.xyz/wp-content/uploads/2025/11/dogue.jpeg",sub:"The Generous Soul",virtue:"Generosity",desc:"A warm heart and a helping paw. With boundless generosity, it reminds us that self-care is just as important as caring for others."},3:{name:"Jaguar",img:"http://feraz.xyz/wp-content/uploads/2025/11/Onca.png",sub:"The Achiever",virtue:"Determination",desc:"Ambition and drive fuel their journey. But true success lies in balancing accomplishments with connection and care. &#x1F5A4;"},4:{name:"Golden Lion Tamarin",img:"http://feraz.xyz/wp-content/uploads/2025/11/Monkey-Lion.png",sub:"The Dreamer",virtue:"Creativity",desc:"Artistic and deeply sensitive, thriving in its own vibrant world. Its journey is to share its unique creativity with the group."},5:{name:"Owl",img:"http://feraz.xyz/wp-content/uploads/2025/11/Owl.jpeg",sub:"The Thinker",virtue:"Wisdom",desc:"Curious and reserved, the mastermind of the group. Symbolizes the endless pursuit of knowledge and wisdom while learning to open its heart."},6:{name:"Bird",img:"http://feraz.xyz/wp-content/uploads/2025/11/Bird.png",sub:"The Loyal",virtue:"Courage",desc:"Steadfast and vigilant, the heartbeat of trust and reliability. With a keen sense of duty, it builds bonds and stands ready to protect what matters most."},7:{name:"Toucan",img:"http://feraz.xyz/wp-content/uploads/2025/11/Tucan.png",sub:"The Explorer",virtue:"Optimism",desc:"Energetic and adventurous, always on the lookout for new experiences. A vibrant symbol of optimism that encourages us to see the bright side."},8:{name:"Alligator",img:"http://feraz.xyz/wp-content/uploads/2025/11/Crocodile.png",sub:"The Challenger",virtue:"Resilience",desc:"Bold and fearless, naturally taking the lead with strength and determination. Its journey is to balance power with empathy."},9:{name:"Sloth",img:"http://feraz.xyz/wp-content/uploads/2025/11/SLoth.png",sub:"The Peacemaker",virtue:"Harmony",desc:"Calm and harmonious, seeking to keep the peace. Its journey is to find the courage to express its own voice."}},
+  pt:{1:{name:"Arara",img:"http://feraz.xyz/wp-content/uploads/2025/11/macaw.jpg",sub:"A L&#xed;der Moral",virtue:"Honestidade",desc:"Um esp&#xed;rito disciplinado, sempre em busca da perfei&#xe7;&#xe3;o e do que &#xe9; certo. S&#xed;mbolo de beleza e harmonia, nos lembra de abraçar a honestidade. &#x2728;"},2:{name:"C&#xe3;o Caramelo",img:"http://feraz.xyz/wp-content/uploads/2025/11/dogue.jpeg",sub:"A Alma Generosa",virtue:"Generosidade",desc:"Um cora&#xe7;&#xe3;o caloroso e uma pata amiga. Com generosidade sem limites, nos lembra que cuidar de si mesmo &#xe9; t&#xe3;o importante quanto cuidar dos outros."},3:{name:"On&#xe7;a",img:"http://feraz.xyz/wp-content/uploads/2025/11/Onca.png",sub:"A Realizadora",virtue:"Determina&#xe7;&#xe3;o",desc:"Ambi&#xe7;&#xe3;o e for&#xe7;a impulsionam sua jornada. O verdadeiro sucesso est&#xe1; em equilibrar conquistas com conex&#xe3;o e cuidado. &#x1F5A4;"},4:{name:"Mico-Le&#xe3;o-Dourado",img:"http://feraz.xyz/wp-content/uploads/2025/11/Monkey-Lion.png",sub:"A Sonhadora",virtue:"Criatividade",desc:"Art&#xed;stico e profundamente sens&#xed;vel, prospera em seu pr&#xf3;prio mundo vibrante. Sua jornada &#xe9; compartilhar sua criatividade &#xfa;nica com o grupo."},5:{name:"Coruja",img:"http://feraz.xyz/wp-content/uploads/2025/11/Owl.jpeg",sub:"A Pensadora",virtue:"Sabedoria",desc:"Curiosa e reservada, a mente brilhante do grupo. Simboliza a busca intermin&#xe1;vel pelo conhecimento e sabedoria."},6:{name:"P&#xe1;ssaro",img:"http://feraz.xyz/wp-content/uploads/2025/11/Bird.png",sub:"A Leal",virtue:"Coragem",desc:"Firme e vigilante, o pulso da confian&#xe7;a e da confiabilidade no grupo. Com um forte senso de dever, constr&#xf3;i la&#xe7;os."},7:{name:"Tucano",img:"http://feraz.xyz/wp-content/uploads/2025/11/Tucan.png",sub:"O Explorador",virtue:"Otimismo",desc:"Energ&#xe9;tico e aventureiro, sempre &#xe0; procura de novas experi&#xea;ncias. S&#xed;mbolo vibrante de otimismo."},8:{name:"Jacar&#xe9;",img:"http://feraz.xyz/wp-content/uploads/2025/11/Crocodile.png",sub:"O Desafiador",virtue:"Resili&#xea;ncia",desc:"Ousado e destemido, lidera naturalmente com for&#xe7;a e determina&#xe7;&#xe3;o. Sua jornada &#xe9; equilibrar poder com empatia."},9:{name:"Bicho-Pregui&#xe7;a",img:"http://feraz.xyz/wp-content/uploads/2025/11/SLoth.png",sub:"O Pacificador",virtue:"Harmonia",desc:"Calmo e harmonioso, busca manter a paz. Sua jornada &#xe9; encontrar coragem para expressar sua pr&#xf3;pria voz."}},
+  es:{1:{name:"Guacamayo",img:"http://feraz.xyz/wp-content/uploads/2025/11/macaw.jpg",sub:"La L&#xed;der Moral",virtue:"Honestidad",desc:"Un esp&#xed;ritu disciplinado, siempre buscando la perfecci&#xf3;n y hacer lo correcto. S&#xed;mbolo de belleza y armon&#xed;a. &#x2728;"},2:{name:"Perro Caramelo",img:"http://feraz.xyz/wp-content/uploads/2025/11/dogue.jpeg",sub:"El Alma Generosa",virtue:"Generosidad",desc:"Un coraz&#xf3;n c&#xe1;lido y una pata amiga. Con generosidad sin l&#xed;mites, nos recuerda que cuidarse es tan importante como cuidar a los dem&#xe1;s."},3:{name:"Jaguar",img:"http://feraz.xyz/wp-content/uploads/2025/11/Onca.png",sub:"El Realizador",virtue:"Determinaci&#xf3;n",desc:"La ambici&#xf3;n y el impulso alimentan su viaje. El &#xe9;xito verdadero radica en equilibrar los logros con la conexi&#xf3;n. &#x1F5A4;"},4:{name:"Tit&#xed; Le&#xf3;n Dorado",img:"http://feraz.xyz/wp-content/uploads/2025/11/Monkey-Lion.png",sub:"El So&#xf1;ador",virtue:"Creatividad",desc:"Art&#xed;stico y profundamente sensible, prospera en su propio mundo vibrante. Su viaje es compartir su creatividad &#xfa;nica."},5:{name:"B&#xfa;ho",img:"http://feraz.xyz/wp-content/uploads/2025/11/Owl.jpeg",sub:"El Pensador",virtue:"Sabidur&#xed;a",desc:"Curioso y reservado, el cerebro del grupo. Simboliza la b&#xfa;squeda interminable del conocimiento y la sabidur&#xed;a."},6:{name:"P&#xe1;jaro",img:"http://feraz.xyz/wp-content/uploads/2025/11/Bird.png",sub:"El Leal",virtue:"Valent&#xed;a",desc:"Firme y vigilante, el latido de la confianza. Con un fuerte sentido del deber, construye lazos."},7:{name:"Tuc&#xe1;n",img:"http://feraz.xyz/wp-content/uploads/2025/11/Tucan.png",sub:"El Explorador",virtue:"Optimismo",desc:"Energ&#xe9;tico y aventurero, siempre buscando nuevas experiencias. Un s&#xed;mbolo vibrante de optimismo."},8:{name:"Caim&#xe1;n",img:"http://feraz.xyz/wp-content/uploads/2025/11/Crocodile.png",sub:"El Desafiador",virtue:"Resiliencia",desc:"Audaz e intr&#xe9;pido, lidera naturalmente con fuerza y determinaci&#xf3;n. Su viaje es equilibrar el poder con la empat&#xed;a."},9:{name:"Perezoso",img:"http://feraz.xyz/wp-content/uploads/2025/11/SLoth.png",sub:"El Pacificador",virtue:"Armon&#xed;a",desc:"Calmado y armonioso, busca mantener la paz. Su viaje es encontrar el valor para expresar su propia voz."}}
+};
+
+var questions={
+  en:[{q:"Which phrase sounds most like you?",o:[{t:"I need to do what is right.",a:1},{t:"I want to be useful to others.",a:2},{t:"I want to be valued.",a:3},{t:"I want to understand who I really am.",a:4},{t:"I want to be competent.",a:5},{t:"I prefer stability and security.",a:6},{t:"I need freedom.",a:7},{t:"I want to be strong.",a:8},{t:"I want to be at peace.",a:9}]},{q:"What motivates you most in your projects?",o:[{t:"Doing the best I can.",a:1},{t:"Feeling that I make a difference.",a:2},{t:"Being recognized.",a:3},{t:"Finding depth and authenticity.",a:4},{t:"Learning something new.",a:5},{t:"Having security.",a:6},{t:"Having variety and pleasure.",a:7},{t:"Achieving concrete results.",a:8},{t:"Maintaining harmony.",a:9}]},{q:"When someone disagrees with you, you...",o:[{t:"Try to convince with logic.",a:1},{t:"Listen and see how I can help.",a:2},{t:"Try to show my point charmingly.",a:3},{t:"Reflect internally and close off.",a:4},{t:"Become more reserved.",a:5},{t:"Feel insecure.",a:6},{t:"Try to escape the discussion.",a:7},{t:"Become more assertive.",a:8},{t:"Try to avoid tension.",a:9}]},{q:"What usually generates the most stress for you?",o:[{t:"Mistakes and injustices.",a:1},{t:"Being ignored.",a:2},{t:"Lack of recognition.",a:3},{t:"Superficiality.",a:4},{t:"Others' incompetence.",a:5},{t:"Uncertainties.",a:6},{t:"Limitations.",a:7},{t:"Weakness.",a:8},{t:"Conflicts.",a:9}]},{q:"How do you prefer to contribute in a group?",o:[{t:"Organizing and ensuring quality.",a:1},{t:"Supporting emotionally.",a:2},{t:"Motivating others.",a:3},{t:"Sharing new perspectives.",a:4},{t:"Offering knowledge.",a:5},{t:"Ensuring security.",a:6},{t:"Making the environment lighter.",a:7},{t:"Leading.",a:8},{t:"Promoting harmony.",a:9}]},{q:"When making an important decision, you...",o:[{t:"Evaluate rules and principles.",a:1},{t:"Consider who will be affected.",a:2},{t:"Think about how to stand out.",a:3},{t:"Listen to your intuition.",a:4},{t:"Analyze facts and data.",a:5},{t:"Ask for opinions.",a:6},{t:"Follow your impulse.",a:7},{t:"Decide alone.",a:8},{t:"Avoid deciding until sure.",a:9}]},{q:"How do you deal with your emotions?",o:[{t:"Try to control them.",a:1},{t:"Demonstrate easily.",a:2},{t:"Use them to inspire.",a:3},{t:"Dive into them.",a:4},{t:"Distance yourself a bit.",a:5},{t:"Get anxious.",a:6},{t:"Use humor.",a:7},{t:"Transform them into strength.",a:8},{t:"Calm them internally.",a:9}]},{q:"In the future, you desire most...",o:[{t:"To be better.",a:1},{t:"To be loved.",a:2},{t:"To be admired.",a:3},{t:"To be understood.",a:4},{t:"To be competent.",a:5},{t:"To be secure.",a:6},{t:"To be free.",a:7},{t:"To be influential.",a:8},{t:"To be at peace.",a:9}]},{q:"What makes you feel most alive?",o:[{t:"Doing the right thing.",a:1},{t:"Helping someone.",a:2},{t:"Being appreciated.",a:3},{t:"Moment of emotional clarity.",a:4},{t:"Mastering knowledge.",a:5},{t:"Feeling protected.",a:6},{t:"Adventure and novelty.",a:7},{t:"Feeling my power.",a:8},{t:"Deep tranquility.",a:9}]}],
+  pt:[{q:"Qual frase mais soa como voc&#xea;?",o:[{t:"Preciso fazer o que &#xe9; certo.",a:1},{t:"Quero ser &#xfa;til aos outros.",a:2},{t:"Quero ser valorizado.",a:3},{t:"Quero entender quem sou.",a:4},{t:"Quero ser competente.",a:5},{t:"Prefiro estabilidade e seguran&#xe7;a.",a:6},{t:"Preciso de liberdade.",a:7},{t:"Quero ser forte.",a:8},{t:"Quero estar em paz.",a:9}]},{q:"O que mais te motiva nos seus projetos?",o:[{t:"Fazer o meu melhor.",a:1},{t:"Sentir que fa&#xe7;o diferen&#xe7;a.",a:2},{t:"Ser reconhecido.",a:3},{t:"Encontrar profundidade e autenticidade.",a:4},{t:"Aprender algo novo.",a:5},{t:"Ter seguran&#xe7;a.",a:6},{t:"Ter variedade e prazer.",a:7},{t:"Alcan&#xe7;ar resultados concretos.",a:8},{t:"Manter harmonia.",a:9}]},{q:"Quando algu&#xe9;m discorda de voc&#xea;, voc&#xea;...",o:[{t:"Tento convencer com l&#xf3;gica.",a:1},{t:"Ou&#xe7;o e vejo como ajudar.",a:2},{t:"Tento mostrar meu ponto com charme.",a:3},{t:"Reflito internamente e me fecho.",a:4},{t:"Fico mais reservado.",a:5},{t:"Fico inseguro.",a:6},{t:"Tento escapar da discuss&#xe3;o.",a:7},{t:"Fico mais assertivo.",a:8},{t:"Tento evitar qualquer tens&#xe3;o.",a:9}]},{q:"O que costuma gerar mais estresse para voc&#xea;?",o:[{t:"Erros e injusti&#xe7;as.",a:1},{t:"Ser ignorado.",a:2},{t:"Falta de reconhecimento.",a:3},{t:"Superficialidade.",a:4},{t:"Incompet&#xea;ncia dos outros.",a:5},{t:"Incertezas.",a:6},{t:"Limita&#xe7;&#xf5;es.",a:7},{t:"Fraqueza.",a:8},{t:"Conflitos.",a:9}]},{q:"Como voc&#xea; prefere contribuir em um grupo?",o:[{t:"Organizando e garantindo qualidade.",a:1},{t:"Apoiando emocionalmente.",a:2},{t:"Motivando os outros.",a:3},{t:"Compartilhando novas perspectivas.",a:4},{t:"Oferecendo conhecimento.",a:5},{t:"Garantindo seguran&#xe7;a.",a:6},{t:"Tornando o ambiente mais leve.",a:7},{t:"Liderando.",a:8},{t:"Promovendo harmonia.",a:9}]},{q:"Ao tomar uma decis&#xe3;o importante, voc&#xea;...",o:[{t:"Avalia regras e princ&#xed;pios.",a:1},{t:"Considera quem ser&#xe1; afetado.",a:2},{t:"Pensa em como se destacar.",a:3},{t:"Ouve sua intui&#xe7;&#xe3;o.",a:4},{t:"Analisa fatos e dados.",a:5},{t:"Pede opini&#xf5;es.",a:6},{t:"Segue seu impulso.",a:7},{t:"Decide sozinho.",a:8},{t:"Evita decidir at&#xe9; ter certeza.",a:9}]},{q:"Como voc&#xea; lida com suas emo&#xe7;&#xf5;es?",o:[{t:"Tento control&#xe1;-las.",a:1},{t:"Demonstro facilmente.",a:2},{t:"Uso-as para inspirar.",a:3},{t:"Mergulho nelas.",a:4},{t:"Me distancio um pouco.",a:5},{t:"Fico ansioso.",a:6},{t:"Uso o humor.",a:7},{t:"Transformo-as em for&#xe7;a.",a:8},{t:"As acalmo internamente.",a:9}]},{q:"Quando pensa no futuro, voc&#xea; mais deseja...",o:[{t:"Ser melhor.",a:1},{t:"Ser amado.",a:2},{t:"Ser admirado.",a:3},{t:"Ser compreendido.",a:4},{t:"Ser competente.",a:5},{t:"Ter seguran&#xe7;a.",a:6},{t:"Ser livre.",a:7},{t:"Ser influente.",a:8},{t:"Estar em paz.",a:9}]},{q:"O que faz voc&#xea; se sentir mais vivo?",o:[{t:"Fazer a coisa certa.",a:1},{t:"Ajudar algu&#xe9;m.",a:2},{t:"Ser apreciado.",a:3},{t:"Momento de clareza emocional.",a:4},{t:"Dominar o conhecimento.",a:5},{t:"Sentir-me protegido.",a:6},{t:"Aventura e novidade.",a:7},{t:"Sentir meu poder.",a:8},{t:"Tranquilidade profunda.",a:9}]}],
+  es:[{q:"&#xbf;Cu&#xe1;l frase suena m&#xe1;s como t&#xfa;?",o:[{t:"Necesito hacer lo correcto.",a:1},{t:"Quiero ser &#xfa;til para los dem&#xe1;s.",a:2},{t:"Quiero ser valorado.",a:3},{t:"Quiero entender qui&#xe9;n soy.",a:4},{t:"Quiero ser competente.",a:5},{t:"Prefiero la estabilidad y seguridad.",a:6},{t:"Necesito libertad.",a:7},{t:"Quiero ser fuerte.",a:8},{t:"Quiero estar en paz.",a:9}]},{q:"&#xbf;Qu&#xe9; te motiva m&#xe1;s en tus proyectos?",o:[{t:"Hacer lo mejor que puedo.",a:1},{t:"Sentir que hago una diferencia.",a:2},{t:"Ser reconocido.",a:3},{t:"Encontrar profundidad y autenticidad.",a:4},{t:"Aprender algo nuevo.",a:5},{t:"Tener seguridad.",a:6},{t:"Tener variedad y placer.",a:7},{t:"Lograr resultados concretos.",a:8},{t:"Mantener armon&#xed;a.",a:9}]},{q:"Cuando alguien no est&#xe1; de acuerdo contigo...",o:[{t:"Intento convencer con l&#xf3;gica.",a:1},{t:"Escucho y veo c&#xf3;mo ayudar.",a:2},{t:"Intento mostrar mi punto con encanto.",a:3},{t:"Reflexiono internamente y me cierro.",a:4},{t:"Me vuelvo m&#xe1;s reservado.",a:5},{t:"Me siento inseguro.",a:6},{t:"Intento escapar de la discusi&#xf3;n.",a:7},{t:"Me vuelvo m&#xe1;s asertivo.",a:8},{t:"Intento evitar tensi&#xf3;n.",a:9}]},{q:"&#xbf;Qu&#xe9; suele generarte m&#xe1;s estr&#xe9;s?",o:[{t:"Errores e injusticias.",a:1},{t:"Ser ignorado.",a:2},{t:"Falta de reconocimiento.",a:3},{t:"La superficialidad.",a:4},{t:"La incompetencia de otros.",a:5},{t:"Las incertidumbres.",a:6},{t:"Las limitaciones.",a:7},{t:"La debilidad.",a:8},{t:"Los conflictos.",a:9}]},{q:"&#xbf;C&#xf3;mo prefieres contribuir en un grupo?",o:[{t:"Organizando y asegurando calidad.",a:1},{t:"Apoyando emocionalmente.",a:2},{t:"Motivando a otros.",a:3},{t:"Compartiendo nuevas perspectivas.",a:4},{t:"Ofreciendo conocimiento.",a:5},{t:"Asegurando seguridad.",a:6},{t:"Haciendo el ambiente m&#xe1;s ligero.",a:7},{t:"Liderando.",a:8},{t:"Promoviendo armon&#xed;a.",a:9}]},{q:"Al tomar una decisi&#xf3;n importante...",o:[{t:"Eval&#xfa;o reglas y principios.",a:1},{t:"Considero qui&#xe9;n se ver&#xe1; afectado.",a:2},{t:"Pienso en c&#xf3;mo destacarme.",a:3},{t:"Escucho mi intuici&#xf3;n.",a:4},{t:"Analizo hechos y datos.",a:5},{t:"Pido opiniones.",a:6},{t:"Sigo mi impulso.",a:7},{t:"Tomo la decisi&#xf3;n solo.",a:8},{t:"Evito decidir hasta estar seguro.",a:9}]},{q:"&#xbf;C&#xf3;mo manejas tus emociones?",o:[{t:"Intento controlarlas.",a:1},{t:"Las demuestro f&#xe1;cilmente.",a:2},{t:"Las uso para inspirar.",a:3},{t:"Me sumerjo en ellas.",a:4},{t:"Me distancio un poco.",a:5},{t:"Me pongo ansioso.",a:6},{t:"Uso el humor.",a:7},{t:"Las transformo en fuerza.",a:8},{t:"Las calmo internamente.",a:9}]},{q:"&#xbf;En el futuro, deseas m&#xe1;s...",o:[{t:"Ser mejor.",a:1},{t:"Ser amado.",a:2},{t:"Ser admirado.",a:3},{t:"Ser comprendido.",a:4},{t:"Ser competente.",a:5},{t:"Estar seguro.",a:6},{t:"Ser libre.",a:7},{t:"Ser influyente.",a:8},{t:"Estar en paz.",a:9}]},{q:"&#xbf;Qu&#xe9; te hace sentir m&#xe1;s vivo?",o:[{t:"Hacer lo correcto.",a:1},{t:"Ayudar a alguien.",a:2},{t:"Ser apreciado.",a:3},{t:"Momento de claridad emocional.",a:4},{t:"Dominar el conocimiento.",a:5},{t:"Sentirme protegido.",a:6},{t:"Aventura y novedad.",a:7},{t:"Sentir mi poder.",a:8},{t:"Tranquilidad profunda.",a:9}]}]
+};
+
+var curr=0, answers=[], scores={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+var shuffled=[];
+
+function getQ(){return questions[LANG]||questions.en;}
+function getU(){return UI[LANG]||UI.en;}
+
+function shuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=a[i];a[i]=a[j];a[j]=tmp;
+  }
+  return a;
+}
+
+function startQuiz(){
+  var qs=getQ();
+  shuffled=[];
+  for(var i=0;i<qs.length;i++) shuffled.push(shuffle(qs[i].o));
+  document.getElementById("screen-intro").style.display="none";
+  document.getElementById("screen-quiz").style.display="block";
+  renderQ();
+}
+
+function renderQ(){
+  var u=getU(), qs=getQ(), q=qs[curr], total=qs.length;
+  var opts=shuffled[curr]||q.o;
+  var pct=Math.round((curr/total)*100);
+  document.getElementById("el-prog").style.width=pct+"%";
+  document.getElementById("el-qlabel").textContent=u.qlabel+" "+(curr+1)+" "+u.of+" "+total;
+  document.getElementById("el-qpct").textContent=pct+"%";
+  var html="<div class=\"qtext\">"+q.q+"</div><div class=\"opts\">";
+  for(var i=0;i<opts.length;i++){
+    var isSel=(answers[curr]===opts[i].a);
+    html+="<button class=\"opt"+(isSel?" sel":"")+"\" onclick=\"selOpt("+opts[i].a+")\">"+opts[i].t+"</button>";
+  }
+  html+="</div>";
+  document.getElementById("el-qblock").innerHTML=html;
+  document.getElementById("btn-prev").disabled=(curr===0);
+  document.getElementById("btn-prev").innerHTML=u.back;
+  document.getElementById("btn-next").disabled=(answers[curr]==null);
+  document.getElementById("btn-next").innerHTML=(curr===total-1)?u.see:u.next;
+}
+
+function selOpt(animalScore){
+  answers[curr]=animalScore;
+  var opts=shuffled[curr];
+  var btns=document.querySelectorAll(".opt");
+  for(var b=0;b<btns.length;b++) btns[b].classList.toggle("sel",opts[b].a===animalScore);
+  document.getElementById("btn-next").disabled=false;
+}
+
+function goPrev(){if(curr>0){curr--;renderQ();}}
+
+function goNext(){
+  var qs=getQ();
+  if(curr<qs.length-1){curr++;renderQ();}
+  else{showResult();}
+}
+
+function showResult(){
+  var u=getU(), qs=getQ();
+  // answers[i] now stores the animal score directly (not index)
+  for(var i=0;i<qs.length;i++){if(answers[i]!=null) scores[answers[i]]++;}
+  var max=0,result=1;
+  for(var t in scores){if(scores[t]>max){max=scores[t];result=parseInt(t);}}
+  var lang=LANG; if(!animals[lang]) lang="en";
+  var a=animals[lang][result];
+  document.getElementById("screen-quiz").style.display="none";
+  document.getElementById("screen-result").style.display="block";
+  document.getElementById("screen-result").innerHTML=
+    "<div class=\"res\">"+
+    "<div class=\"acard\"><img src=\""+a.img+"\" alt=\""+a.name+"\"></div>"+
+    "<div class=\"rname\">"+a.name+"</div>"+
+    "<div class=\"rsub\">"+a.sub+"</div>"+
+    "<div class=\"rvirtue\">&#x2728; "+a.virtue+"</div>"+
+    "<div class=\"rdesc\">"+a.desc+"</div>"+
+    "<div class=\"raction\">"+
+    "<button class=\"btn-x\" onclick=\"shareX()\"><svg viewBox=\"0 0 24 24\"><path d=\"M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z\"/></svg>"+u.share+"</button>"+
+    "<button class=\"btn-o\" onclick=\"location.reload()\">"+u.again+"</button>"+
+    "</div></div>";
+}
+
+function shareX(){window.open("https://twitter.com/intent/tweet?text=Just%20discovered%20my%20spirit%20animal!%20%F0%9F%A6%9C%0AWhich%20one%20are%20you%3F%0A%0ATake%20the%20quiz%20%40feraz_xyz%0A%E2%9C%A8%20www.feraz.xyz%2Fquiz.html","_blank");}
+</script>
+</body>
+</html>
